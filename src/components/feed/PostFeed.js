@@ -7,6 +7,7 @@ export const PostFeed = (post) => {
   const [comments, setComments] = useState([]);
   const [postLikes, setPostLikes] = useState([]);
   const [commentLikes, setCommentLikes] = useState([]);
+  const history = useHistory();
 
   useEffect(() => {
     fetchPosts();
@@ -45,6 +46,15 @@ export const PostFeed = (post) => {
   };
   return (
     <>
+      <div>
+        <button
+          onClick={() => {
+            history.push("/postfeed/create");
+          }}
+        >
+          Create New Post
+        </button>
+      </div>
       {posts.map((post) => {
         return (
           <div className="post">

@@ -21,7 +21,7 @@ export const Login = () => {
     existingUserCheck().then((exists) => {
       if (exists) {
         localStorage.setItem("chupacabro_user", exists.id);
-        history.push("/");
+        history.push("/postfeed");
       } else {
         existDialog.current.showModal();
       }
