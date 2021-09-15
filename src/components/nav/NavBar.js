@@ -4,21 +4,9 @@ import "./NavBar.css";
 
 export const NavBar = () => {
   return (
-    <ul className="navbar">
-      <li className="navbar__item active">
-        <Link className="navbar__link" to="/employees">
-          Employees
-        </Link>
-      </li>
+    <div className="navbar">
       <li className="navbar__item">
-        <Link className="navbar__link" to="/customers">
-          Customers
-        </Link>
-      </li>
-      <li className="navbar__item">
-        <Link className="navbar__link" to="/tickets">
-          Tickets
-        </Link>
+        <Link to="/postfeed"> Chupacabros</Link>
       </li>
       <li className="navbar__item">
         <Link
@@ -31,6 +19,6 @@ export const NavBar = () => {
           Logout
         </Link>
       </li>
-    </ul>
+    </div>
   );
 };
