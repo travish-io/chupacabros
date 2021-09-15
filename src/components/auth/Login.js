@@ -4,15 +4,14 @@ import { useHistory } from "react-router-dom";
 import "./Login.css";
 
 export const Login = () => {
-  const [user, setUser] = useState({
-    email: "",
-    password: "",
-  });
+  const [credentials, setCredentials] = useState({});
   const existDialog = useRef();
   const history = useHistory();
 
   const existingUserCheck = () => {
-    return fetch(`http://localhost:8088/users?email=${user}`)
+    return fetch(
+      `http://localhost:8088/users?email=${credentials.email}&password=${credentials.password}`
+    )
       .then((res) => res.json())
       .then((user) => (user.length ? user[0] : false));
   };
@@ -49,7 +48,11 @@ export const Login = () => {
             <label htmlFor="inputEmail"> Email address </label>
             <input
               type="email"
-              onChange={(evt) => setUser(evt.target.value)}
+              onChange={(evt) => {
+                const copy = { ...credentials };
+                copy.email = evt.target.value;
+                setCredentials(copy);
+              }}
               className="form-control"
               placeholder="Email address"
               required
@@ -60,7 +63,11 @@ export const Login = () => {
             <label htmlFor="inputPassword"> Password </label>
             <input
               type="Password"
-              onChange={(evt) => setUser(evt.target.value)}
+              onChange={(evt) => {
+                const copy = { ...credentials };
+                copy.password = evt.target.value;
+                setCredentials(copy);
+              }}
               className="form-control"
               placeholder="Password"
               required
