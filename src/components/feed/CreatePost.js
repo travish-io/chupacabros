@@ -1,19 +1,13 @@
 import React, { useState } from "react";
-import { useHistory } from "react-router";
-import ApiManager from "../ApiManager";
 
-export const CreatePost = ({ newPost }) => {
+export const CreatePost = () => {
   const [post, updatePost] = useState({
     title: "",
     imageUrl: "",
     text: "",
   });
 
-  const history = useHistory();
-
-  const createPost = (evt) => {
-    evt.preventDefault();
-    debugger;
+  const createPost = () => {
     const newData = {
       userId: parseInt(localStorage.getItem("chupacabro_user")),
       title: post.title,
@@ -91,8 +85,8 @@ export const CreatePost = ({ newPost }) => {
       </fieldset>
       <button
         className="btn btn-primary"
-        onClick={(evt) => {
-          createPost(evt);
+        onClick={() => {
+          createPost();
         }}
       >
         Submit New Post

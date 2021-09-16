@@ -2,7 +2,9 @@
 
 export default {
   async fetchPosts() {
-    const res = await fetch("http://localhost:8088/posts?_expand=user");
+    const res = await fetch(
+      "http://localhost:8088/posts?_expand=user&_sort=date&_order=desc"
+    );
     return await res.json();
   },
 
