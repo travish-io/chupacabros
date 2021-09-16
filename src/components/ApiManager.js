@@ -24,4 +24,13 @@ export default {
     );
     return await res.json();
   },
+  async deletePost(id) {
+    const e = await fetch(`http://localhost:8088/posts/${id}`, {
+      method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("chupacabro_user")}`,
+      },
+    });
+    return await e.json();
+  },
 };

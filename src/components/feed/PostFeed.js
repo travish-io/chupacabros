@@ -3,7 +3,7 @@ import { useHistory } from "react-router";
 import ApiManager from "../ApiManager";
 import "./PostFeed.css";
 
-export const PostFeed = ({ updatedFeed }) => {
+export const PostFeed = () => {
   const [posts, setPosts] = useState([]);
   const [comments, setComments] = useState([]);
   const [postLikes, setPostLikes] = useState([]);
@@ -23,7 +23,7 @@ export const PostFeed = ({ updatedFeed }) => {
     ApiManager.fetchPostLikes().then((data) => {
       setPostLikes(data);
     });
-  }, [updatedFeed]);
+  }, []);
 
   return (
     <>
@@ -56,6 +56,27 @@ export const PostFeed = ({ updatedFeed }) => {
                 }
               })}
             </div>
+            <div>
+              <button onClick={() => {}}>Like Post</button>
+            </div>
+            {post.userId ===
+            parseInt(localStorage.getItem("chupacabro_user")) ? (
+              <div>
+                <button
+                  onClick={() => {
+                    ApiManager.deletePost(post.id).then(() => {
+                      ApiManager.fetchPosts().then((data) => {
+                        setPosts(data);
+                      });
+                    });
+                  }}
+                >
+                  Delete Post
+                </button>
+              </div>
+            ) : (
+              ""
+            )}
           </div>
         );
       })}
