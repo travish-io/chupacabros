@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router";
+import ApiManager from "../ApiManager";
 import "./PostFeed.css";
 
-export const PostFeed = (post) => {
+export const PostFeed = () => {
   const [posts, setPosts] = useState([]);
   const [comments, setComments] = useState([]);
   const [postLikes, setPostLikes] = useState([]);
@@ -10,46 +11,26 @@ export const PostFeed = (post) => {
   const history = useHistory();
 
   useEffect(() => {
-    fetchPosts();
-    fetchComments();
-    fetchCommentLikes();
-    fetchPostLikes();
+    ApiManager.fetchPosts().then((data) => {
+      setPosts(data);
+    });
+    ApiManager.fetchComments().then((data) => {
+      setComments(data);
+    });
+    ApiManager.fetchCommentLikes().then((data) => {
+      setCommentLikes(data);
+    });
+    ApiManager.fetchPostLikes().then((data) => {
+      setPostLikes(data);
+    });
   }, []);
 
-  const fetchPosts = () => {
-    return fetch("http://localhost:8088/posts?_expand=user")
-      .then((res) => res.json())
-      .then((data) => {
-        setPosts(data);
-      });
-  };
-  const fetchCommentLikes = () => {
-    return fetch("http://localhost:8088/commentLikes?_sort=commentId")
-      .then((res) => res.json())
-      .then((data) => {
-        setCommentLikes(data);
-      });
-  };
-  const fetchPostLikes = () => {
-    return fetch("http://localhost:8088/postLikes?_sort=postId")
-      .then((res) => res.json())
-      .then((data) => {
-        setPostLikes(data);
-      });
-  };
-  const fetchComments = () => {
-    return fetch("http://localhost:8088/comments?_expand=user&_sort=postId")
-      .then((res) => res.json())
-      .then((data) => {
-        setComments(data);
-      });
-  };
   return (
     <>
       <div>
         <button
           onClick={() => {
-            history.push("/postfeed/create");
+            history.push("/create");
           }}
         >
           Create New Post
@@ -60,8 +41,8 @@ export const PostFeed = (post) => {
           <div className="post">
             <h3>{post.title}</h3>
             <img className="post__image" src={post.imageUrl} alt="img" />
-            <div class="post__tagline">{post.text}</div>
-            <div class="post__tagline">
+            <div className="post__tagline">{post.text}</div>
+            <div className="post__tagline">
               Posted by <b>{post.user.name}</b>
             </div>
             <div className="post__comment">
@@ -75,6 +56,27 @@ export const PostFeed = (post) => {
                 }
               })}
             </div>
+            <div>
+              <button onClick={() => {}}>Like Post</button>
+            </div>
+            {post.userId ===
+            parseInt(localStorage.getItem("chupacabro_user")) ? (
+              <div>
+                <button
+                  onClick={() => {
+                    ApiManager.deletePost(post.id).then(() => {
+                      ApiManager.fetchPosts().then((data) => {
+                        setPosts(data);
+                      });
+                    });
+                  }}
+                >
+                  Delete Post
+                </button>
+              </div>
+            ) : (
+              ""
+            )}
           </div>
         );
       })}
