@@ -92,14 +92,27 @@ export const PostFeed = () => {
             <button
               id={post.id}
               className="post__likes"
-              onClick={(evt) =>
-                post.postLikes?.filter((postLike) =>
-                  postLike.userId ===
-                  parseInt(localStorage.getItem("chupacabro_user"))
-                    ? ApiManager.deletePostLike(postLike.id)
-                    : createPostLike(evt)
-                )
-              }
+              onClick={(evt) => {
+                const foundPostLike = post.postLikes?.find((postLike) => {
+                  return (
+                    postLike.userId ===
+                    parseInt(localStorage.getItem("chupacabro_user"))
+                  );
+                });
+
+                return foundPostLike
+                  ? ApiManager.deletePostLike(foundPostLike.id).then(() =>
+                      ApiManager.fetchPosts().then((data) => {
+                        setPosts(data);
+                      })
+                    )
+                  : createPostLike(evt).then(() =>
+                      ApiManager.fetchPosts().then((data) => {
+                        setPosts(data);
+                      })
+                    );
+              }}
+              /* ? ApiManager.deletePostLike(postLike.id) : createPostLike(evt) */
             >
               Like Post
             </button>
