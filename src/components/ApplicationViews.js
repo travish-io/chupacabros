@@ -5,10 +5,10 @@ import { CreatePost } from "./feed/CreatePost";
 export const ApplicationViews = () => {
   return (
     <>
-      <Route exact path="/postfeed/create">
+      <Route exact path="/create">
         <CreatePost />
       </Route>
-      <Route path="/postfeed">
+      <Route path="/">
         <PostFeed />
       </Route>
     </>

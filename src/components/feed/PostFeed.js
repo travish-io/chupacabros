@@ -30,7 +30,7 @@ export const PostFeed = () => {
       <div>
         <button
           onClick={() => {
-            history.push("/postfeed/create");
+            history.push("/create");
           }}
         >
           Create New Post
