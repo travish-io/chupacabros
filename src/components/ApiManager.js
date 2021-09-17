@@ -3,7 +3,7 @@
 export default {
   async fetchPosts() {
     const res = await fetch(
-      "http://localhost:8088/posts?_expand=user&_sort=date&_order=desc"
+      "http://localhost:8088/posts?_expand=user&_sort=date&_order=desc&_embed=postLikes"
     );
     return await res.json();
   },
@@ -25,6 +25,15 @@ export default {
   },
   async deletePost(id) {
     const e = await fetch(`http://localhost:8088/posts/${id}`, {
+      method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("chupacabro_user")}`,
+      },
+    });
+    return await e.json();
+  },
+  async deletePostLike(id) {
+    const e = await fetch(`http://localhost:8088/postLikes/${id}`, {
       method: "DELETE",
       headers: {
         Authorization: `Bearer ${localStorage.getItem("chupacabro_user")}`,

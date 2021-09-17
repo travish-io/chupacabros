@@ -84,8 +84,26 @@ export const PostFeed = () => {
                 }
               })}
             </div>
-            <div>num of likes</div>
-            <div className="post__likes">
+            <div>
+              {post.postLikes?.length === 1
+                ? "1 Like"
+                : `${post.postLikes?.length} Likes`}{" "}
+            </div>
+            <button
+              id={post.id}
+              className="post__likes"
+              onClick={(evt) =>
+                post.postLikes?.filter((postLike) =>
+                  postLike.userId ===
+                  parseInt(localStorage.getItem("chupacabro_user"))
+                    ? ApiManager.deletePostLike(postLike.id)
+                    : createPostLike(evt)
+                )
+              }
+            >
+              Like Post
+            </button>
+            {/* <div className="post__likes">
               <input
                 type="checkbox"
                 id={post.id}
@@ -95,7 +113,7 @@ export const PostFeed = () => {
                 onChange={(evt) => handleCheckbox(evt)}
               />
               Like this Post
-            </div>
+            </div> */}
             {post.userId ===
             parseInt(localStorage.getItem("chupacabro_user")) ? (
               <div>
