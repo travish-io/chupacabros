@@ -8,6 +8,7 @@ export const PostFeed = () => {
   const [comments, setComments] = useState([]);
   const [postLikes, setPostLikes] = useState([]);
   const [commentLikes, setCommentLikes] = useState([]);
+  const [isChecked, setIsChecked] = useState(false);
   const history = useHistory();
 
   useEffect(() => {
@@ -25,6 +26,33 @@ export const PostFeed = () => {
     });
   }, []);
 
+  // {postLike.userId && postLike.postId? deletePostLike() : createPostLike()}
+
+  const handleCheckbox = (evtObj) => {
+    evtObj.preventDefault();
+    console.log(evtObj.target.id);
+    setIsChecked(!isChecked);
+    createPostLike(evtObj);
+  };
+
+  const createPostLike = (evtObj) => {
+    const newData = {
+      userId: parseInt(localStorage.getItem("chupacabro_user")),
+      postId: parseInt(evtObj.target.id),
+    };
+
+    const fetchOption = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(newData),
+    };
+
+    return fetch("http://localhost:8088/postLikes", fetchOption)
+      .then((Response) => Response.json())
+      .then(() => ApiManager.fetchPostLikes());
+  };
   return (
     <>
       <div>
@@ -56,8 +84,17 @@ export const PostFeed = () => {
                 }
               })}
             </div>
-            <div>
-              <button onClick={() => {}}>Like Post</button>
+            <div>num of likes</div>
+            <div className="post__likes">
+              <input
+                type="checkbox"
+                id={post.id}
+                name="postLikes"
+                value="Like Post"
+                checked={isChecked}
+                onChange={(evt) => handleCheckbox(evt)}
+              />
+              Like this Post
             </div>
             {post.userId ===
             parseInt(localStorage.getItem("chupacabro_user")) ? (

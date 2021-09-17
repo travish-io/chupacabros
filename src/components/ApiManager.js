@@ -7,7 +7,6 @@ export default {
     );
     return await res.json();
   },
-
   async fetchCommentLikes() {
     const res = await fetch(
       "http://localhost:8088/commentLikes?_sort=commentId"
