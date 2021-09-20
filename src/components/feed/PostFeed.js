@@ -8,10 +8,14 @@ export const PostFeed = () => {
   const [comments, setComments] = useState([]);
   const [postLikes, setPostLikes] = useState([]);
   const [commentLikes, setCommentLikes] = useState([]);
-  const [isChecked, setIsChecked] = useState(false);
+  const [users, setUsers] = useState([]);
+  const [toggleComments, setToggleComments] = useState(false);
   const history = useHistory();
 
   useEffect(() => {
+    ApiManager.fetchUsers().then((data) => {
+      setUsers(data);
+    });
     ApiManager.fetchPosts().then((data) => {
       setPosts(data);
     });
@@ -25,15 +29,6 @@ export const PostFeed = () => {
       setPostLikes(data);
     });
   }, []);
-
-  // {postLike.userId && postLike.postId? deletePostLike() : createPostLike()}
-
-  const handleCheckbox = (evtObj) => {
-    evtObj.preventDefault();
-    console.log(evtObj.target.id);
-    setIsChecked(!isChecked);
-    createPostLike(evtObj);
-  };
 
   const createPostLike = (evtObj) => {
     const newData = {
@@ -53,6 +48,25 @@ export const PostFeed = () => {
       .then((Response) => Response.json())
       .then(() => ApiManager.fetchPostLikes());
   };
+  const createCommentLike = (evtObj) => {
+    const newData = {
+      userId: parseInt(localStorage.getItem("chupacabro_user")),
+      commentId: parseInt(evtObj.target.id),
+    };
+
+    const fetchOption = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(newData),
+    };
+
+    return fetch("http://localhost:8088/commentLikes", fetchOption)
+      .then((Response) => Response.json())
+      .then(() => ApiManager.fetchCommentLikes());
+  };
+
   return (
     <>
       <div>
@@ -66,23 +80,120 @@ export const PostFeed = () => {
       </div>
       {posts.map((post) => {
         return (
-          <div className="post">
+          <div className="post" key={post.id}>
             <h3>{post.title}</h3>
             <img className="post__image" src={post.imageUrl} alt="img" />
             <div className="post__tagline">{post.text}</div>
             <div className="post__tagline">
               Posted by <b>{post.user.name}</b>
             </div>
+            <div>
+              {post.Comments?.length === 1
+                ? "1 Comment"
+                : `${post.Comments?.length} Comments`}
+            </div>
+            <div>
+              <button
+                className="comment__btn"
+                id={post.id}
+                onClick={() => {
+                  toggleComments
+                    ? setToggleComments(false)
+                    : setToggleComments(true);
+                }}
+              >
+                Comment
+              </button>
+            </div>
             <div className="post__comment">
-              {comments.map((comment) => {
-                if (comment.postId === post.id) {
-                  return (
-                    <p>
-                      {comment.text} Comment by <b> {comment.user.name}</b>
-                    </p>
-                  );
-                }
-              })}
+              {toggleComments
+                ? comments.map((comment) => {
+                    if (comment.postId === post.id) {
+                      return (
+                        <p key={comment.id}>
+                          {comment.text} Comment by <b> {comment.user.name}</b>
+                          <button
+                            id={comment.id}
+                            className="comment__like"
+                            onClick={(evt) => {
+                              let filteredCommentLikes = commentLikes.filter(
+                                (commentLike) => {
+                                  return (
+                                    commentLike.commentId ===
+                                    parseInt(evt.target.id)
+                                  );
+                                }
+                              );
+
+                              // let foundCommentLike = {};
+                              filteredCommentLikes.find((commentLike) => {
+                                return commentLike.userId ===
+                                  parseInt(
+                                    localStorage.getItem("chupacabro_user")
+                                  )
+                                  ? ApiManager.deleteCommentLike(
+                                      commentLike.id
+                                    ).then(() =>
+                                      ApiManager.fetchCommentLikes().then(
+                                        (data) => {
+                                          setCommentLikes(data);
+                                        }
+                                      )
+                                    )
+                                  : createCommentLike(evt).then(() =>
+                                      ApiManager.fetchCommentLikes().then(
+                                        (data) => {
+                                          setCommentLikes(data);
+                                        }
+                                      )
+                                    );
+                              });
+
+                              // console.log(filteredCommentLikes);
+                              // filteredCommentLikes.length !== 0
+                              // ? filteredCommentLikes.find((commentLike) => {
+                              //     let foundFilteredCommentLike = {}
+                              //       if (
+                              //         commentLike.userId ===
+                              //         parseInt(
+                              //           localStorage.getItem("chupacabro_user")
+                              //         )
+                              //       ) {
+                              //         return ApiManager.deleteCommentLike(
+                              //           commentLike.id
+                              //         ).then(() =>
+                              //           ApiManager.fetchCommentLikes().then(
+                              //             (data) => {
+                              //               setCommentLikes(data);
+                              //             }
+                              //           )
+                              //         );
+                              //       } else {
+                              //         return createCommentLike(evt).then(() =>
+                              //           ApiManager.fetchCommentLikes().then(
+                              //             (data) => {
+                              //               setCommentLikes(data);
+                              //             }
+                              //           )
+                              //         );
+                              //       }
+                              //     })
+                              //   : createCommentLike(evt).then(() =>
+                              //       ApiManager.fetchCommentLikes().then(
+                              //         (data) => {
+                              //           setCommentLikes(data);
+                              //         }
+                              //       )
+                              //     );
+                            }}
+                          >
+                            Like Comment
+                          </button>
+                        </p>
+                      );
+                    }
+                  })
+                : ""}
             </div>
             <div>
               {post.postLikes?.length === 1
@@ -112,21 +223,10 @@ export const PostFeed = () => {
                       })
                     );
               }}
-              /* ? ApiManager.deletePostLike(postLike.id) : createPostLike(evt) */
             >
               Like Post
             </button>
-            {/* <div className="post__likes">
-              <input
-                type="checkbox"
-                id={post.id}
-                name="postLikes"
-                value="Like Post"
-                checked={isChecked}
-                onChange={(evt) => handleCheckbox(evt)}
-              />
-              Like this Post
-            </div> */}
+
             {post.userId ===
             parseInt(localStorage.getItem("chupacabro_user")) ? (
               <div>
