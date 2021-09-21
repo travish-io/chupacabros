@@ -19,21 +19,25 @@ export const PostFeed = () => {
     ApiManager.fetchPosts().then((data) => {
       setPosts(data);
     });
+    fetchComments();
+    ApiManager.fetchPostLikes().then((data) => {
+      setPostLikes(data);
+    });
+  }, []);
+
+  const fetchComments = () => {
     ApiManager.fetchComments().then((data) => {
       setComments(data);
     });
     ApiManager.fetchCommentLikes().then((data) => {
       setCommentLikes(data);
     });
-    ApiManager.fetchPostLikes().then((data) => {
-      setPostLikes(data);
-    });
-  }, []);
+  };
 
-  const createPostLike = (evtObj) => {
+  const createPostLike = (evt) => {
     const newData = {
       userId: parseInt(localStorage.getItem("chupacabro_user")),
-      postId: parseInt(evtObj.target.id),
+      postId: parseInt(evt.target.id),
     };
 
     const fetchOption = {
@@ -48,10 +52,10 @@ export const PostFeed = () => {
       .then((Response) => Response.json())
       .then(() => ApiManager.fetchPostLikes());
   };
-  const createCommentLike = (evtObj) => {
+  const createCommentLike = (evt) => {
     const newData = {
       userId: parseInt(localStorage.getItem("chupacabro_user")),
-      commentId: parseInt(evtObj.target.id),
+      commentId: parseInt(evt.target.id),
     };
 
     const fetchOption = {
@@ -96,7 +100,7 @@ export const PostFeed = () => {
               <button
                 className="comment__btn"
                 id={post.id}
-                onClick={() => {
+                onClick={(evt) => {
                   toggleComments
                     ? setToggleComments(false)
                     : setToggleComments(true);
@@ -108,87 +112,45 @@ export const PostFeed = () => {
             <div className="post__comment">
               {toggleComments
                 ? comments.map((comment) => {
+                    const foundCommentLike = comment.commentLikes?.find(
+                      (commentLike) => {
+                        return (
+                          commentLike.userId ===
+                          parseInt(localStorage.getItem("chupacabro_user"))
+                        );
+                      }
+                    );
                     if (comment.postId === post.id) {
                       return (
                         <p key={comment.id}>
                           {comment.text} Comment by <b> {comment.user.name}</b>
-                          <button
-                            id={comment.id}
-                            className="comment__like"
-                            onClick={(evt) => {
-                              let filteredCommentLikes = commentLikes.filter(
-                                (commentLike) => {
-                                  return (
-                                    commentLike.commentId ===
-                                    parseInt(evt.target.id)
-                                  );
-                                }
-                              );
-
-                              // let foundCommentLike = {};
-                              filteredCommentLikes.find((commentLike) => {
-                                return commentLike.userId ===
-                                  parseInt(
-                                    localStorage.getItem("chupacabro_user")
-                                  )
-                                  ? ApiManager.deleteCommentLike(
-                                      commentLike.id
-                                    ).then(() =>
-                                      ApiManager.fetchCommentLikes().then(
-                                        (data) => {
-                                          setCommentLikes(data);
-                                        }
-                                      )
-                                    )
-                                  : createCommentLike(evt).then(() =>
-                                      ApiManager.fetchCommentLikes().then(
-                                        (data) => {
-                                          setCommentLikes(data);
-                                        }
-                                      )
-                                    );
-                              });
-
-                              // console.log(filteredCommentLikes);
-                              // filteredCommentLikes.length !== 0
-                              // ? filteredCommentLikes.find((commentLike) => {
-                              //     let foundFilteredCommentLike = {}
-                              //       if (
-                              //         commentLike.userId ===
-                              //         parseInt(
-                              //           localStorage.getItem("chupacabro_user")
-                              //         )
-                              //       ) {
-                              //         return ApiManager.deleteCommentLike(
-                              //           commentLike.id
-                              //         ).then(() =>
-                              //           ApiManager.fetchCommentLikes().then(
-                              //             (data) => {
-                              //               setCommentLikes(data);
-                              //             }
-                              //           )
-                              //         );
-                              //       } else {
-                              //         return createCommentLike(evt).then(() =>
-                              //           ApiManager.fetchCommentLikes().then(
-                              //             (data) => {
-                              //               setCommentLikes(data);
-                              //             }
-                              //           )
-                              //         );
-                              //       }
-                              //     })
-                              //   : createCommentLike(evt).then(() =>
-                              //       ApiManager.fetchCommentLikes().then(
-                              //         (data) => {
-                              //           setCommentLikes(data);
-                              //         }
-                              //       )
-                              //     );
-                            }}
-                          >
-                            Like Comment
-                          </button>
+                          {foundCommentLike ? (
+                            <button
+                              id={comment.id}
+                              className="comment__like"
+                              onClick={() => {
+                                ApiManager.deleteCommentLike(
+                                  foundCommentLike.id
+                                ).then(() => {
+                                  fetchComments();
+                                });
+                              }}
+                            >
+                              unlike comment
+                            </button>
+                          ) : (
+                            <button
+                              id={comment.id}
+                              className="comment__like"
+                              onClick={(evt) => {
+                                createCommentLike(evt).then(() => {
+                                  fetchComments();
+                                });
+                              }}
+                            >
+                              like comment
+                            </button>
+                          )}
                         </p>
                       );
                     }

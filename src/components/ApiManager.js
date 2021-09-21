@@ -23,7 +23,7 @@ export default {
   },
   async fetchComments() {
     const res = await fetch(
-      "http://localhost:8088/Comments?_expand=user&_sort=postId"
+      "http://localhost:8088/comments?_expand=user&_sort=postId&_embed=commentLikes"
     );
     return await res.json();
   },

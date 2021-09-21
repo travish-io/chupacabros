@@ -14,6 +14,7 @@ export const CreatePost = () => {
       imageUrl: post.imageUrl,
       text: post.text,
       date: Date.now(),
+      location: "",
     };
 
     const fetchOption = {
@@ -86,7 +87,9 @@ export const CreatePost = () => {
       <button
         className="btn btn-primary"
         onClick={() => {
-          createPost();
+          post.title && post.text && post.imageUrl !== ""
+            ? createPost()
+            : window.alert("Fill out all fields");
         }}
       >
         Submit New Post
