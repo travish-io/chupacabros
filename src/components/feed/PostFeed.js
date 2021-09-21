@@ -2,15 +2,21 @@ import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router";
 import ApiManager from "../ApiManager";
 import "./PostFeed.css";
+import "./comments.css";
 
 export const PostFeed = () => {
   const [posts, setPosts] = useState([]);
   const [comments, setComments] = useState([]);
+  const [newComment, updateComment] = useState({
+    text: "",
+  });
   const [postLikes, setPostLikes] = useState([]);
   const [commentLikes, setCommentLikes] = useState([]);
   const [users, setUsers] = useState([]);
   const [toggleComments, setToggleComments] = useState(false);
+  const [postId, setPostId] = useState([]);
   const history = useHistory();
+  // comment toggle add new state variable to capture evt.target.id then check that variable against the current post.id
 
   useEffect(() => {
     ApiManager.fetchUsers().then((data) => {
@@ -70,6 +76,25 @@ export const PostFeed = () => {
       .then((Response) => Response.json())
       .then(() => ApiManager.fetchCommentLikes());
   };
+  const createComment = (evt) => {
+    const newData = {
+      userId: parseInt(localStorage.getItem("chupacabro_user")),
+      postId: parseInt(evt.target.id),
+      text: newComment.text,
+    };
+
+    const fetchOption = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(newData),
+    };
+
+    return fetch("http://localhost:8088/comments", fetchOption)
+      .then((Response) => Response.json())
+      .then(() => ApiManager.fetchComments());
+  };
 
   return (
     <>
@@ -92,9 +117,9 @@ export const PostFeed = () => {
               Posted by <b>{post.user.name}</b>
             </div>
             <div>
-              {post.Comments?.length === 1
+              {post.comments?.length === 1
                 ? "1 Comment"
-                : `${post.Comments?.length} Comments`}
+                : `${post.comments?.length} Comments`}
             </div>
             <div>
               <button
@@ -110,6 +135,35 @@ export const PostFeed = () => {
               </button>
             </div>
             <div className="post__comment">
+              {toggleComments ? (
+                <div>
+                  <textarea
+                    id={post.id}
+                    rows="5"
+                    cols="33"
+                    onChange={(evt) => {
+                      const copy = { ...newComment };
+                      copy.text = evt.target.value;
+                      updateComment(copy);
+                    }}
+                  >
+                    Add a new comment...
+                  </textarea>
+                  <button
+                    id={post.id}
+                    className="new__comment"
+                    onClick={(evt) => {
+                      createComment(evt).then(() => {
+                        fetchComments();
+                      });
+                    }}
+                  >
+                    Submit new comment
+                  </button>
+                </div>
+              ) : (
+                ""
+              )}
               {toggleComments
                 ? comments.map((comment) => {
                     const foundCommentLike = comment.commentLikes?.find(
@@ -120,6 +174,7 @@ export const PostFeed = () => {
                         );
                       }
                     );
+
                     if (comment.postId === post.id) {
                       return (
                         <p key={comment.id}>
@@ -127,7 +182,7 @@ export const PostFeed = () => {
                           {foundCommentLike ? (
                             <button
                               id={comment.id}
-                              className="comment__like"
+                              className="comment__unlike"
                               onClick={() => {
                                 ApiManager.deleteCommentLike(
                                   foundCommentLike.id
