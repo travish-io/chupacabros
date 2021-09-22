@@ -14,6 +14,7 @@ export const PostFeed = () => {
   const [commentLikes, setCommentLikes] = useState([]);
   const [users, setUsers] = useState([]);
   const [toggleComments, setToggleComments] = useState(false);
+  const [evtTrgt, setEvtTrgt] = useState(0);
   const [postId, setPostId] = useState([]);
   const history = useHistory();
   // comment toggle add new state variable to capture evt.target.id then check that variable against the current post.id
@@ -108,9 +109,15 @@ export const PostFeed = () => {
         </button>
       </div>
       {posts.map((post) => {
+        const postDate = new Date(post.date);
+        const newDate = postDate.toDateString();
+        const newTime = postDate.toTimeString();
         return (
           <div className="post" key={post.id}>
             <h3>{post.title}</h3>
+            <h5>
+              {newDate} {newTime}
+            </h5>
             <img className="post__image" src={post.imageUrl} alt="img" />
             <div className="post__tagline">{post.text}</div>
             <div className="post__tagline">
