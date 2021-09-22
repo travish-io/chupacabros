@@ -3,11 +3,14 @@
 export default {
   async fetchPosts() {
     const res = await fetch(
-      "http://localhost:8088/posts?_expand=user&_sort=date&_order=desc"
+      "http://localhost:8088/posts?_expand=user&_sort=date&_order=desc&_embed=postLikes&_embed=comments"
     );
     return await res.json();
   },
-
+  async fetchUsers() {
+    const res = await fetch("http://localhost:8088/users?_embed=commentLikes");
+    return await res.json();
+  },
   async fetchCommentLikes() {
     const res = await fetch(
       "http://localhost:8088/commentLikes?_sort=commentId"
@@ -20,12 +23,30 @@ export default {
   },
   async fetchComments() {
     const res = await fetch(
-      "http://localhost:8088/comments?_expand=user&_sort=postId"
+      "http://localhost:8088/comments?_expand=user&_sort=postId&_embed=commentLikes"
     );
     return await res.json();
   },
   async deletePost(id) {
     const e = await fetch(`http://localhost:8088/posts/${id}`, {
+      method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("chupacabro_user")}`,
+      },
+    });
+    return await e.json();
+  },
+  async deletePostLike(id) {
+    const e = await fetch(`http://localhost:8088/postLikes/${id}`, {
+      method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("chupacabro_user")}`,
+      },
+    });
+    return await e.json();
+  },
+  async deleteCommentLike(id) {
+    const e = await fetch(`http://localhost:8088/commentLikes/${id}`, {
       method: "DELETE",
       headers: {
         Authorization: `Bearer ${localStorage.getItem("chupacabro_user")}`,
