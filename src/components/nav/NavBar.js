@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import "./NavBar.css";
-
+// import logo from "logo.path"
 export const NavBar = () => {
   return (
     <div className="navbar">
@@ -22,3 +22,4 @@ export const NavBar = () => {
     </div>
   );
 };
+//<img src={logo} alt="Home" />

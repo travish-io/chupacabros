@@ -1,3 +1,4 @@
+@import url("https://fonts.googleapis.com/icon?family=Material+Icons");
 .post__feed {
   padding: 3rem 0;
   display: flex;
@@ -66,9 +67,10 @@
   margin-top: 5em;
 }
 
-.post {
-  margin: 0 25%;
+.post__container {
+  margin: 5% 25%;
   flex-basis: 50%;
+  border: 1px black solid;
 }
 
 .post__image {
@@ -82,8 +84,8 @@
 }
 
 .post__tagline {
-  font-size: 1em;
-  margin: 0 25% 0.5em 25%;
+  font-size: 0.9em;
+  margin: 0 5% 0.5em 5%;
 }
 
 .post__remark {
@@ -94,4 +96,8 @@
 .post__icon {
   height: 1.5em;
   margin: 0em 2em 0em 2em;
+}
+.post__cl__container {
+  display: flex;
+  justify-content: space-between;
 }
