@@ -9,7 +9,7 @@ export const ApplicationViews = () => {
       <Route exact path="/create">
         <CreatePost />
       </Route>
-      <Route exact path="/users/:userId(\d+)">
+      <Route exact path="/u/:userId(\d+)">
         <UserProfile />
       </Route>
       <Route exact path="/">

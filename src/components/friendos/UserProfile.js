@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useHistory, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import ApiManager from "../ApiManager";
 import "../feed/PostFeed.css";
 import "../feed/comments.css";
@@ -14,10 +14,7 @@ export const UserProfile = () => {
   const [commentLikes, setCommentLikes] = useState([]);
   const [user, setUsers] = useState({});
   const [toggleComments, setToggleComments] = useState(false);
-  const [toggleCreate, setToggleCreate] = useState(false);
-  const history = useHistory();
   const { userId } = useParams();
-  // comment toggle add new state variable to capture evt.target.id then check that variable against the current post.id
 
   useEffect(() => {
     ApiManager.fetchUserPosts(userId).then((data) => {
@@ -99,29 +96,9 @@ export const UserProfile = () => {
 
   return (
     <>
-      {toggleCreate ? (
-        <div className="font-effect-anaglyph">
-          <button
-            onClick={() => {
-              toggleCreate ? setToggleCreate(false) : setToggleCreate(true);
-              history.push("/");
-            }}
-          >
-            Discard Post
-          </button>
-        </div>
-      ) : (
-        <div className="font-effect-anaglyph">
-          <button
-            onClick={() => {
-              toggleCreate ? setToggleCreate(false) : setToggleCreate(true);
-              history.push("/create");
-            }}
-          >
-            Create New Post
-          </button>
-        </div>
-      )}
+      <div className="user__Profile">
+        <h1 className="font-effect-anaglyph">u/ {user.name} </h1>
+      </div>
       <div className="postFeed__container">
         {posts.map((post) => {
           const postDate = new Date(post.date);

@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { useHistory } from "react-router-dom";
 import { Link } from "react-router-dom";
 import ApiManager from "../ApiManager";
 import "./PostFeed.css";
@@ -15,9 +14,6 @@ export const PostFeed = () => {
   const [commentLikes, setCommentLikes] = useState([]);
   const [users, setUsers] = useState([]);
   const [toggleComments, setToggleComments] = useState(false);
-  const [toggleCreate, setToggleCreate] = useState(false);
-  const history = useHistory();
-  // comment toggle add new state variable to capture evt.target.id then check that variable against the current post.id
 
   useEffect(() => {
     ApiManager.fetchUsers().then((data) => {
@@ -99,29 +95,6 @@ export const PostFeed = () => {
 
   return (
     <>
-      {toggleCreate ? (
-        <div className="font-effect-anaglyph">
-          <button
-            onClick={() => {
-              toggleCreate ? setToggleCreate(false) : setToggleCreate(true);
-              history.push("/");
-            }}
-          >
-            Discard Post
-          </button>
-        </div>
-      ) : (
-        <div className="font-effect-anaglyph">
-          <button
-            onClick={() => {
-              toggleCreate ? setToggleCreate(false) : setToggleCreate(true);
-              history.push("/create");
-            }}
-          >
-            Create New Post
-          </button>
-        </div>
-      )}
       <div className="postFeed__container">
         {posts.map((post) => {
           const postDate = new Date(post.date);
@@ -132,7 +105,7 @@ export const PostFeed = () => {
               <div className="post__header">
                 <h5 className="font-effect-anaglyph">
                   c/chupacabros &#183; Posted by{" "}
-                  <Link to={`/users/${post.user.id}`}>u/{post.user.name}</Link>
+                  <Link to={`/u/${post.user.id}`}>u/{post.user.name}</Link>
                 </h5>
                 <h6 className="font-effect-anaglyph">
                   {newDate} {newTime}

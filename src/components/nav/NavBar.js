@@ -1,8 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import "./NavBar.css";
 
 export const NavBar = () => {
+  const [toggleCreate, setToggleCreate] = useState(false);
+
   return (
     <div className="navbar">
       <li className="navbar__item">
@@ -15,7 +17,30 @@ export const NavBar = () => {
           />
         </Link>
       </li>
-      <div className="font-effect-anaglyph">
+      {toggleCreate ? (
+        <div className="font-effect-anaglyph">
+          <Link
+            to="/"
+            onClick={() => {
+              toggleCreate ? setToggleCreate(false) : setToggleCreate(true);
+            }}
+          >
+            <h3>Discard Post</h3>
+          </Link>
+        </div>
+      ) : (
+        <div className="create">
+          <Link
+            to="/create"
+            onClick={() => {
+              toggleCreate ? setToggleCreate(false) : setToggleCreate(true);
+            }}
+          >
+            <h3 className="font-effect-anaglyph">Post a New sighting</h3>
+          </Link>
+        </div>
+      )}
+      <div>
         <li className="navbar__item">
           <Link
             className="navbar__link"
@@ -24,7 +49,7 @@ export const NavBar = () => {
               localStorage.removeItem("chupacabro_user");
             }}
           >
-            Logout
+            <h3 className="font-effect-anaglyph"> Logout </h3>
           </Link>
         </li>
       </div>

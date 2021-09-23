@@ -101,3 +101,7 @@
   display: flex;
   justify-content: space-between;
 }
+.user__profile,
+h1 {
+  text-align: center;
+}
