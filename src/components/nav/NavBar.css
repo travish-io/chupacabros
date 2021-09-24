@@ -1,10 +1,37 @@
+@import url("https://fonts.googleapis.com/icon?family=Material+Icons&effect=anaglyph");
+@import url("https://fonts.googleapis.com/css2?family=Fjalla+One&display=swap");
+
 .navbar {
   display: flex;
   flex-wrap: nowrap;
   justify-content: space-between;
+  /* text-align: center; */
 }
 
 .navbar__item {
   flex-basis: 20%;
   list-style-type: none;
+}
+.create {
+  /* text-align: center; */
+  font-family: "Fjalla One", sans-serif;
+  font-size: 23px;
+  /* padding-right: 8em;
+  padding-bottom: 0; */
+  color: black;
+}
+.logout {
+  font-family: "Fjalla One", sans-serif;
+  font-size: 23px;
+  padding-right: 5em;
+}
+.navbar__link {
+  text-decoration: none;
+  color: black;
+}
+.discard {
+  font-family: "Fjalla One", sans-serif;
+  color: black;
+  font-size: 30px;
+  text-decoration: none;
 }

@@ -7,6 +7,18 @@ export default {
     );
     return await res.json();
   },
+  async fetchPostsByUser(id) {
+    const res = await fetch(
+      `http://localhost:8088/posts?userId=${id}&_expand=user&_sort=date&_order=desc&_embed=postLikes&_embed=comments`
+    );
+    return await res.json();
+  },
+  async fetchUserPosts(id) {
+    const res = await fetch(
+      `http://localhost:8088/users/${id}?_embed=posts&_embed=postLikes&_embed=comments&_embed=commentLikes`
+    );
+    return await res.json();
+  },
   async fetchUsers() {
     const res = await fetch("http://localhost:8088/users?_embed=commentLikes");
     return await res.json();

@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import ApiManager from "../ApiManager";
-import "./PostFeed.css";
-import "./comments.css";
+import "../feed/PostFeed.css";
+import "../feed/comments.css";
 
-export const PostFeed = () => {
+export const UserProfile = () => {
   const [posts, setPosts] = useState([]);
   const [comments, setComments] = useState([]);
   const [newComment, updateComment] = useState({
@@ -12,14 +12,15 @@ export const PostFeed = () => {
   });
   const [postLikes, setPostLikes] = useState([]);
   const [commentLikes, setCommentLikes] = useState([]);
-  const [users, setUsers] = useState([]);
+  const [user, setUsers] = useState({});
   const [toggleComments, setToggleComments] = useState(false);
+  const { userId } = useParams();
 
   useEffect(() => {
-    ApiManager.fetchUsers().then((data) => {
+    ApiManager.fetchUserPosts(userId).then((data) => {
       setUsers(data);
     });
-    ApiManager.fetchPosts().then((data) => {
+    ApiManager.fetchPostsByUser(userId).then((data) => {
       setPosts(data);
     });
     fetchComments();
@@ -95,17 +96,20 @@ export const PostFeed = () => {
 
   return (
     <>
+      <div className="user__Profile">
+        <h1 className="font-effect-anaglyph">u/{user.name} </h1>
+      </div>
       <div className="postFeed__container">
         {posts.map((post) => {
           const postDate = new Date(post.date);
           const newDate = postDate.toDateString();
           const newTime = postDate.toTimeString();
+
           return (
             <div className="post__container" key={post.id}>
               <div className="post__header">
                 <h5 className="font-effect-anaglyph">
-                  c/chupacabros &#183; Posted by{" "}
-                  <Link to={`/u/${post.user.id}`}>u/{post.user.name}</Link>
+                  c/chupacabros &#183; Posted by u/{post.user.name}
                 </h5>
                 <h6 className="font-effect-anaglyph">
                   {newDate} {newTime}
@@ -144,12 +148,12 @@ export const PostFeed = () => {
 
                     return foundPostLike
                       ? ApiManager.deletePostLike(foundPostLike.id).then(() =>
-                          ApiManager.fetchPosts().then((data) => {
+                          ApiManager.fetchPostsByUser(userId).then((data) => {
                             setPosts(data);
                           })
                         )
                       : createPostLike(evt).then(() =>
-                          ApiManager.fetchPosts().then((data) => {
+                          ApiManager.fetchPostsByUser(userId).then((data) => {
                             setPosts(data);
                           })
                         );
@@ -166,9 +170,11 @@ export const PostFeed = () => {
                     <button
                       onClick={() => {
                         ApiManager.deletePost(post.id).then(() => {
-                          ApiManager.fetchPosts().then((data) => {
-                            setPosts(data);
-                          });
+                          ApiManager.fetchPostsByUser(post.userId).then(
+                            (data) => {
+                              setPosts(data);
+                            }
+                          );
                         });
                       }}
                     >

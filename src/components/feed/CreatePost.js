@@ -1,11 +1,12 @@
 import React, { useState } from "react";
-
+import { useHistory } from "react-router";
 export const CreatePost = () => {
   const [post, updatePost] = useState({
     title: "",
     imageUrl: "",
     text: "",
   });
+  const history = useHistory();
 
   const createPost = () => {
     const newData = {
@@ -76,7 +77,6 @@ export const CreatePost = () => {
               copy.text = evt.target.value;
               updatePost(copy);
             }}
-            required
             autoFocus
             type="text"
             className="form-control"
@@ -87,9 +87,9 @@ export const CreatePost = () => {
       <button
         className="btn btn-primary"
         onClick={() => {
-          post.title && post.text && post.imageUrl !== ""
-            ? createPost()
-            : window.alert("Fill out all fields");
+          post.title && post.imageUrl !== ""
+            ? createPost().then(history.push("/"))
+            : window.alert("Fill out all required fields");
         }}
       >
         Submit New Post
