@@ -37,6 +37,102 @@ export const PostFeed = () => {
     });
   };
 
+  const legitSwitch = (legitness) => {
+    switch (legitness) {
+      case 100:
+        return (
+          <div className="legit-o-meter">
+            <div className="legit-10">?</div>
+            <div className="legit-10">?</div>
+            <div className="legit-10">?</div>
+            <div className="legit-10">?</div>
+            <div className="legit-10">?</div>
+            <div className="legit-10">?</div>
+            <div className="legit-10">?</div>
+            <div className="legit-10">?</div>
+            <div className="legit-10">?</div>
+            <div className="legit-10">?</div>
+          </div>
+        );
+      case 90:
+        return (
+          <div className="legit-o-meter">
+            <div className="legit-10">?</div>
+            <div className="legit-10">?</div>
+            <div className="legit-10">?</div>
+            <div className="legit-10">?</div>
+            <div className="legit-10">?</div>
+            <div className="legit-10">?</div>
+            <div className="legit-10">?</div>
+            <div className="legit-10">?</div>
+            <div className="legit-10">?</div>
+            <div className="legit-empty">?</div>
+          </div>
+        );
+      case 80:
+        return (
+          <div className="legit-o-meter">
+            <div className="legit-8">?</div>
+            <div className="legit-8">?</div>
+            <div className="legit-8">?</div>
+            <div className="legit-8">?</div>
+            <div className="legit-8">?</div>
+            <div className="legit-8">?</div>
+            <div className="legit-8">?</div>
+            <div className="legit-8">?</div>
+            <div className="legit-empty">?</div>
+            <div className="legit-empty">?</div>
+          </div>
+        );
+      case 70:
+        return (
+          <div className="legit-o-meter">
+            <div className="legit-7">?</div>
+            <div className="legit-7">?</div>
+            <div className="legit-7">?</div>
+            <div className="legit-7">?</div>
+            <div className="legit-7">?</div>
+            <div className="legit-7">?</div>
+            <div className="legit-7">?</div>
+            <div className="legit-empty">?</div>
+            <div className="legit-empty">?</div>
+            <div className="legit-empty">?</div>
+          </div>
+        );
+      case 60:
+        return (
+          <div className="legit-o-meter">
+            <div className="legit-6">?</div>
+            <div className="legit-6">?</div>
+            <div className="legit-6">?</div>
+            <div className="legit-6">?</div>
+            <div className="legit-6">?</div>
+            <div className="legit-6">?</div>
+            <div className="legit-empty">?</div>
+            <div className="legit-empty">?</div>
+            <div className="legit-empty">?</div>
+            <div className="legit-empty">?</div>
+          </div>
+        );
+      case 50:
+        return (
+          <div className="legit-o-meter">
+            <div className="legit-5">?</div>
+            <div className="legit-5">?</div>
+            <div className="legit-5">?</div>
+            <div className="legit-5">?</div>
+            <div className="legit-5">?</div>
+            <div className="legit-empty">?</div>
+            <div className="legit-empty">?</div>
+            <div className="legit-empty">?</div>
+            <div className="legit-empty">?</div>
+            <div className="legit-empty">?</div>
+          </div>
+        );
+      default:
+        return "";
+    }
+  };
   const createPostLike = (evt) => {
     const newData = {
       userId: parseInt(localStorage.getItem("chupacabro_user")),
@@ -105,11 +201,20 @@ export const PostFeed = () => {
               <div className="post__header">
                 <h5 className="font-effect-anaglyph">
                   c/chupacabros &#183; Posted by{" "}
-                  <Link to={`/u/${post.user.id}`}>u/{post.user.name}</Link>
+                  <Link to={`/u/${post.user.id}`}>u/{post.user.name} </Link>
                 </h5>
                 <h6 className="font-effect-anaglyph">
                   {newDate} {newTime}
                 </h6>
+
+                {post.legitness >= 50 ? (
+                  <div className="legit-o-container">
+                    <h6 className="font-effect-anaglyph">Legit-O-Meter:</h6>
+                    {legitSwitch(post.legitness)} {post.legitness}%
+                  </div>
+                ) : (
+                  ""
+                )}
                 <h5>{post.title}</h5>
               </div>
               <img className="post__image" src={post.imageUrl} alt="img" />
@@ -224,7 +329,15 @@ export const PostFeed = () => {
                       if (comment.postId === post.id) {
                         return (
                           <p key={comment.id} className="comments">
-                            <b> u/{comment.user.name}</b> <br></br>
+                            <b>
+                              <img
+                                src={comment.user.profileImg}
+                                className="comment__profilePic"
+                                alt=""
+                              />{" "}
+                              u/{comment.user.name}
+                            </b>{" "}
+                            <br></br>
                             {comment.text}
                             {foundCommentLike ? (
                               <div>
@@ -270,3 +383,4 @@ export const PostFeed = () => {
     </>
   );
 };
+// it is not liking the legit-o-meter haha. prob delete it

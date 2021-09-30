@@ -97,6 +97,7 @@ export const UserProfile = () => {
   return (
     <>
       <div className="user__Profile">
+        <img src={user.profileImg} alt="" className="user__profilePic" />
         <h1 className="font-effect-anaglyph">u/{user.name} </h1>
       </div>
       <div className="postFeed__container">

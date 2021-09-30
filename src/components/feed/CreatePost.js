@@ -5,8 +5,15 @@ export const CreatePost = () => {
     title: "",
     imageUrl: "",
     text: "",
+    legitness: 0,
   });
+  const [legitness, setLegitness] = useState(0);
   const history = useHistory();
+
+  const handleSlider = (evt) => {
+    setLegitness(evt.target.value);
+    console.log(legitness);
+  };
 
   const createPost = () => {
     const newData = {
@@ -15,6 +22,7 @@ export const CreatePost = () => {
       imageUrl: post.imageUrl,
       text: post.text,
       date: Date.now(),
+      legitness: parseInt(legitness),
       location: "",
     };
 
@@ -82,6 +90,22 @@ export const CreatePost = () => {
             className="form-control"
             placeholder="Brief description of sighting"
           />
+        </div>
+      </fieldset>
+      <fieldset>
+        <div className="legit__container">
+          <label htmlFor="range">How Legit is this Sighting?</label>
+          <input
+            className="legit__slider"
+            id="legitness"
+            type="range"
+            min="0"
+            max="100"
+            value={legitness}
+            onChange={handleSlider}
+            step="5"
+          />
+          {legitness}%
         </div>
       </fieldset>
       <button
