@@ -16,7 +16,12 @@ export const NavBar = () => {
   return (
     <div className="navbar">
       <div className="navbar__item">
-        <Link to="/">
+        <Link
+          to="/"
+          onClick={() => {
+            setToggleCreate(false);
+          }}
+        >
           <img
             src={require("./Chupacabros-logos_black_smaller.png").default}
             alt="Home"
@@ -69,6 +74,14 @@ export const NavBar = () => {
             <h3> Logout </h3>
           </Link>
         </li>
+      </div>
+      <div>
+        <img
+          src={require("./probe_icon.png").default}
+          alt="Home"
+          height="66px"
+          width="66px"
+        />
       </div>
     </div>
   );

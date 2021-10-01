@@ -7,6 +7,7 @@ import "../feed/comments.css";
 export const UserProfile = () => {
   const [posts, setPosts] = useState([]);
   const [comments, setComments] = useState([]);
+  const [follows, setFollows] = useState([]);
   const [newComment, updateComment] = useState({
     text: "",
   });
@@ -23,6 +24,9 @@ export const UserProfile = () => {
     ApiManager.fetchPostsByUser(userId).then((data) => {
       setPosts(data);
     });
+    ApiManager.fetchFollows().then((data) => {
+      setFollows(data);
+    });
     fetchComments();
     ApiManager.fetchPostLikes().then((data) => {
       setPostLikes(data);
@@ -38,6 +42,29 @@ export const UserProfile = () => {
     });
   };
 
+  const userProfileFollowers = follows.filter((follow) => {
+    return follow.followingId === user.id;
+  });
+  const currentUserFollows = follows.filter((follow) => {
+    return parseInt(localStorage.getItem("chupacabro_user")) === follow.userId;
+  });
+  const createFollow = (evt) => {
+    const newData = {
+      userId: parseInt(localStorage.getItem("chupacabro_user")),
+      followingId: parseInt(evt.target.id),
+    };
+
+    const fetchOption = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(newData),
+    };
+    return fetch("http://localhost:8088/follows", fetchOption)
+      .then((Response) => Response.json())
+      .then(() => ApiManager.fetchFollows());
+  };
   const createPostLike = (evt) => {
     const newData = {
       userId: parseInt(localStorage.getItem("chupacabro_user")),
@@ -99,6 +126,57 @@ export const UserProfile = () => {
       <div className="user__Profile">
         <img src={user.profileImg} alt="" className="user__profilePic" />
         <h1 className="font-effect-anaglyph">u/{user.name} </h1>
+      </div>
+      <div className="profile__buttons">
+        <div className="profile__follow">
+          {user.id === parseInt(localStorage.getItem("chupacabro_user")) ? (
+            ""
+          ) : user.id !== parseInt(localStorage.getItem("chupacabro_user")) &&
+            currentUserFollows.every((follow) => {
+              return follow.followingId !== user.id;
+            }) ? (
+            <button
+              id={user.id}
+              className="follow__button"
+              onClick={(evt) => {
+                createFollow(evt).then(() =>
+                  ApiManager.fetchFollows().then((data) => {
+                    setFollows(data);
+                  })
+                );
+              }}
+            >
+              <span class="material-icons">add</span> Follow
+            </button>
+          ) : (
+            <button
+              id={user.id}
+              className="following__botton"
+              onClick={() => {
+                const foundFollow = currentUserFollows.find((follow) => {
+                  return follow.followingId === user.id;
+                });
+
+                ApiManager.deleteFollow(foundFollow.id).then(() =>
+                  ApiManager.fetchFollows().then((data) => {
+                    setFollows(data);
+                  })
+                );
+              }}
+            >
+              <span class="material-icons">done</span> Following
+            </button>
+          )}
+        </div>
+        <div className="profile__stats">
+          {userProfileFollowers.length} followers &#183; following{" "}
+          {user?.follows?.length}
+        </div>
+        {user.id === parseInt(localStorage.getItem("chupacabro_user")) ? (
+          ""
+        ) : (
+          <button className="probe__button">Probe!</button>
+        )}
       </div>
       <div className="postFeed__container">
         {posts.map((post) => {
@@ -231,7 +309,15 @@ export const UserProfile = () => {
                       if (comment.postId === post.id) {
                         return (
                           <p key={comment.id} className="comments">
-                            <b> u/{comment.user.name}</b> <br></br>
+                            <b>
+                              <img
+                                src={comment.user.profileImg}
+                                className="comment__profilePic"
+                                alt=""
+                              />
+                              u/{comment.user.name}
+                            </b>{" "}
+                            <br></br>
                             {comment.text}
                             {foundCommentLike ? (
                               <div>

@@ -102,8 +102,17 @@
   justify-content: space-between;
 }
 .user__Profile {
+  margin-top: 6rem;
   display: flex;
   justify-content: center;
+}
+.profile__buttons {
+  margin: 2rem, 0, 0, 13rem;
+  display: flex;
+  justify-content: center;
+}
+.profile__stats {
+  padding: 1rem;
 }
 .comment__profilePic {
   height: 30px;
@@ -114,6 +123,10 @@
   height: 30px;
   width: 36px;
   border-radius: 50%;
+}
+.post__heading {
+  display: flex;
+  justify-content: space-between;
 }
 .user__profilePic {
   height: 100px;

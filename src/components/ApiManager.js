@@ -15,12 +15,16 @@ export default {
   },
   async fetchUserPosts(id) {
     const res = await fetch(
-      `http://localhost:8088/users/${id}?_embed=posts&_embed=postLikes&_embed=comments&_embed=commentLikes`
+      `http://localhost:8088/users/${id}?_embed=posts&_embed=postLikes&_embed=comments&_embed=commentLikes&_embed=follows`
     );
     return await res.json();
   },
   async fetchUsers() {
     const res = await fetch("http://localhost:8088/users?_embed=commentLikes");
+    return await res.json();
+  },
+  async fetchFollows() {
+    const res = await fetch("http://localhost:8088/follows");
     return await res.json();
   },
   async fetchCommentLikes() {
@@ -59,6 +63,15 @@ export default {
   },
   async deleteCommentLike(id) {
     const e = await fetch(`http://localhost:8088/commentLikes/${id}`, {
+      method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("chupacabro_user")}`,
+      },
+    });
+    return await e.json();
+  },
+  async deleteFollow(id) {
+    const e = await fetch(`http://localhost:8088/follows/${id}`, {
       method: "DELETE",
       headers: {
         Authorization: `Bearer ${localStorage.getItem("chupacabro_user")}`,

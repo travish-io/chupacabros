@@ -6,6 +6,7 @@ import "./comments.css";
 
 export const PostFeed = () => {
   const [posts, setPosts] = useState([]);
+  const [follows, setFollows] = useState([]);
   const [comments, setComments] = useState([]);
   const [newComment, updateComment] = useState({
     text: "",
@@ -26,6 +27,9 @@ export const PostFeed = () => {
     ApiManager.fetchPostLikes().then((data) => {
       setPostLikes(data);
     });
+    ApiManager.fetchFollows().then((data) => {
+      setFollows(data);
+    });
   }, []);
 
   const fetchComments = () => {
@@ -37,101 +41,26 @@ export const PostFeed = () => {
     });
   };
 
-  const legitSwitch = (legitness) => {
-    switch (legitness) {
-      case 100:
-        return (
-          <div className="legit-o-meter">
-            <div className="legit-10">?</div>
-            <div className="legit-10">?</div>
-            <div className="legit-10">?</div>
-            <div className="legit-10">?</div>
-            <div className="legit-10">?</div>
-            <div className="legit-10">?</div>
-            <div className="legit-10">?</div>
-            <div className="legit-10">?</div>
-            <div className="legit-10">?</div>
-            <div className="legit-10">?</div>
-          </div>
-        );
-      case 90:
-        return (
-          <div className="legit-o-meter">
-            <div className="legit-10">?</div>
-            <div className="legit-10">?</div>
-            <div className="legit-10">?</div>
-            <div className="legit-10">?</div>
-            <div className="legit-10">?</div>
-            <div className="legit-10">?</div>
-            <div className="legit-10">?</div>
-            <div className="legit-10">?</div>
-            <div className="legit-10">?</div>
-            <div className="legit-empty">?</div>
-          </div>
-        );
-      case 80:
-        return (
-          <div className="legit-o-meter">
-            <div className="legit-8">?</div>
-            <div className="legit-8">?</div>
-            <div className="legit-8">?</div>
-            <div className="legit-8">?</div>
-            <div className="legit-8">?</div>
-            <div className="legit-8">?</div>
-            <div className="legit-8">?</div>
-            <div className="legit-8">?</div>
-            <div className="legit-empty">?</div>
-            <div className="legit-empty">?</div>
-          </div>
-        );
-      case 70:
-        return (
-          <div className="legit-o-meter">
-            <div className="legit-7">?</div>
-            <div className="legit-7">?</div>
-            <div className="legit-7">?</div>
-            <div className="legit-7">?</div>
-            <div className="legit-7">?</div>
-            <div className="legit-7">?</div>
-            <div className="legit-7">?</div>
-            <div className="legit-empty">?</div>
-            <div className="legit-empty">?</div>
-            <div className="legit-empty">?</div>
-          </div>
-        );
-      case 60:
-        return (
-          <div className="legit-o-meter">
-            <div className="legit-6">?</div>
-            <div className="legit-6">?</div>
-            <div className="legit-6">?</div>
-            <div className="legit-6">?</div>
-            <div className="legit-6">?</div>
-            <div className="legit-6">?</div>
-            <div className="legit-empty">?</div>
-            <div className="legit-empty">?</div>
-            <div className="legit-empty">?</div>
-            <div className="legit-empty">?</div>
-          </div>
-        );
-      case 50:
-        return (
-          <div className="legit-o-meter">
-            <div className="legit-5">?</div>
-            <div className="legit-5">?</div>
-            <div className="legit-5">?</div>
-            <div className="legit-5">?</div>
-            <div className="legit-5">?</div>
-            <div className="legit-empty">?</div>
-            <div className="legit-empty">?</div>
-            <div className="legit-empty">?</div>
-            <div className="legit-empty">?</div>
-            <div className="legit-empty">?</div>
-          </div>
-        );
-      default:
-        return "";
-    }
+  let currentUserFollows = follows.filter((follow) => {
+    return parseInt(localStorage.getItem("chupacabro_user")) === follow.userId;
+  });
+
+  const createFollow = (evt) => {
+    const newData = {
+      userId: parseInt(localStorage.getItem("chupacabro_user")),
+      followingId: parseInt(evt.target.id),
+    };
+
+    const fetchOption = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(newData),
+    };
+    return fetch("http://localhost:8088/follows", fetchOption)
+      .then((Response) => Response.json())
+      .then(() => ApiManager.fetchFollows());
   };
   const createPostLike = (evt) => {
     const newData = {
@@ -199,10 +128,54 @@ export const PostFeed = () => {
           return (
             <div className="post__container" key={post.id}>
               <div className="post__header">
-                <h5 className="font-effect-anaglyph">
-                  c/chupacabros &#183; Posted by{" "}
-                  <Link to={`/u/${post.user.id}`}>u/{post.user.name} </Link>
-                </h5>
+                <div className="post__heading">
+                  <h5 className="font-effect-anaglyph">
+                    c/chupacabros &#183; Posted by{" "}
+                    <Link to={`/u/${post.user.id}`}>u/{post.user.name} </Link>
+                  </h5>
+                  {post.user.id ===
+                  parseInt(localStorage.getItem("chupacabro_user")) ? (
+                    ""
+                  ) : post.user.id !==
+                      parseInt(localStorage.getItem("chupacabro_user")) &&
+                    currentUserFollows.every((follow) => {
+                      return follow.followingId !== post.user.id;
+                    }) ? (
+                    <button
+                      id={post.user.id}
+                      className="follow__button"
+                      onClick={(evt) => {
+                        createFollow(evt).then(() =>
+                          ApiManager.fetchFollows().then((data) => {
+                            setFollows(data);
+                          })
+                        );
+                      }}
+                    >
+                      <span class="material-icons">add</span> Follow
+                    </button>
+                  ) : (
+                    <button
+                      id={post.user.id}
+                      className="following__botton"
+                      onClick={() => {
+                        const foundFollow = currentUserFollows.find(
+                          (follow) => {
+                            return follow.followingId === post.user.id;
+                          }
+                        );
+
+                        ApiManager.deleteFollow(foundFollow.id).then(() =>
+                          ApiManager.fetchFollows().then((data) => {
+                            setFollows(data);
+                          })
+                        );
+                      }}
+                    >
+                      <span class="material-icons">done</span> Following
+                    </button>
+                  )}
+                </div>
                 <h6 className="font-effect-anaglyph">
                   {newDate} {newTime}
                 </h6>
@@ -210,7 +183,7 @@ export const PostFeed = () => {
                 {post.legitness >= 50 ? (
                   <div className="legit-o-container">
                     <h6 className="font-effect-anaglyph">Legit-O-Meter:</h6>
-                    {legitSwitch(post.legitness)} {post.legitness}%
+                    {post.legitness}%
                   </div>
                 ) : (
                   ""
