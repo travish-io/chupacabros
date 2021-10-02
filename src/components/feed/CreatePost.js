@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useHistory } from "react-router";
 import ApiManager from "../ApiManager";
-
+import { Link } from "react-router-dom";
 export const CreatePost = () => {
   const [post, updatePost] = useState({
     title: "",
@@ -118,7 +118,12 @@ export const CreatePost = () => {
             : window.alert("Fill out all required fields");
         }}
       >
-        Submit New Post
+        Submit New Sighting
+      </button>
+      <button className="btn btn-primary">
+        <Link className="create__link" to="/">
+          Discard Sighting
+        </Link>
       </button>
     </form>
   );

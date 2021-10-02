@@ -20,7 +20,13 @@ export default {
     return await res.json();
   },
   async fetchUsers() {
-    const res = await fetch("http://localhost:8088/users?_embed=commentLikes");
+    const res = await fetch(
+      "http://localhost:8088/users?_embed=commentLikes&_embed=probes"
+    );
+    return await res.json();
+  },
+  async fetchProbes() {
+    const res = await fetch("http://localhost:8088/probes?_expand=user");
     return await res.json();
   },
   async fetchFollows() {

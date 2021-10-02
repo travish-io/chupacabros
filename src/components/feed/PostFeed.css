@@ -5,7 +5,21 @@
   flex-direction: column;
   justify-content: center;
 }
-
+.create__link {
+  text-decoration: none;
+  color: black;
+}
+.create {
+}
+.current__user {
+}
+.dropdown__container {
+}
+.dropdown__menu {
+}
+.navbar__item {
+  border-bottom: black 1px solid;
+}
 .noPosts {
   text-align: center;
 }
@@ -133,6 +147,9 @@
   width: 160px;
   border-radius: 50%;
   margin: 10px;
+}
+.create {
+  text-align: center;
 }
 .legit__slider {
   width: 175px;

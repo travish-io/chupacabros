@@ -4,11 +4,14 @@ import "./index.css";
 import { Chupacabros } from "./components/Chupacabros";
 import reportWebVitals from "./reportWebVitals";
 import { BrowserRouter } from "react-router-dom";
+import SimpleReactLightbox from "simple-react-lightbox";
 
 ReactDOM.render(
   <React.StrictMode>
     <BrowserRouter>
-      <Chupacabros />
+      <SimpleReactLightbox>
+        <Chupacabros />
+      </SimpleReactLightbox>
     </BrowserRouter>
   </React.StrictMode>,
   document.getElementById("root")

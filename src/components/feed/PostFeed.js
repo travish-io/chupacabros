@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import ApiManager from "../ApiManager";
+import { SRLWrapper } from "simple-react-lightbox";
 import "./PostFeed.css";
 import "./comments.css";
 
@@ -15,6 +16,7 @@ export const PostFeed = () => {
   const [commentLikes, setCommentLikes] = useState([]);
   const [users, setUsers] = useState([]);
   const [toggleComments, setToggleComments] = useState(false);
+  const [toggleCreate, setToggleCreate] = useState(false);
 
   useEffect(() => {
     ApiManager.fetchUsers().then((data) => {
@@ -119,240 +121,254 @@ export const PostFeed = () => {
   };
 
   return (
-    <>
-      <div className="postFeed__container">
-        {posts.map((post) => {
-          const postDate = new Date(post.date);
-          const newDate = postDate.toDateString();
-          const newTime = postDate.toTimeString();
-          return (
-            <div className="post__container" key={post.id}>
-              <div className="post__header">
-                <div className="post__heading">
-                  <h5 className="font-effect-anaglyph">
-                    c/chupacabros &#183; Posted by{" "}
-                    <Link to={`/u/${post.user.id}`}>u/{post.user.name} </Link>
-                  </h5>
-                  {post.user.id ===
-                  parseInt(localStorage.getItem("chupacabro_user")) ? (
-                    ""
-                  ) : post.user.id !==
-                      parseInt(localStorage.getItem("chupacabro_user")) &&
-                    currentUserFollows.every((follow) => {
-                      return follow.followingId !== post.user.id;
-                    }) ? (
-                    <button
-                      id={post.user.id}
-                      className="follow__button"
-                      onClick={(evt) => {
-                        createFollow(evt).then(() =>
-                          ApiManager.fetchFollows().then((data) => {
-                            setFollows(data);
-                          })
-                        );
-                      }}
-                    >
-                      <span class="material-icons">add</span> Follow
-                    </button>
-                  ) : (
-                    <button
-                      id={post.user.id}
-                      className="following__botton"
-                      onClick={() => {
-                        const foundFollow = currentUserFollows.find(
-                          (follow) => {
-                            return follow.followingId === post.user.id;
-                          }
-                        );
+    <SRLWrapper>
+      <>
+        <div className="create">
+          <Link className="navbar__link" to="/create">
+            <h3 className="font-effect-anaglyph">Post Your Sighting</h3>
+          </Link>
+        </div>
 
-                        ApiManager.deleteFollow(foundFollow.id).then(() =>
-                          ApiManager.fetchFollows().then((data) => {
-                            setFollows(data);
-                          })
-                        );
-                      }}
-                    >
-                      <span class="material-icons">done</span> Following
-                    </button>
-                  )}
-                </div>
-                <h6 className="font-effect-anaglyph">
-                  {newDate} {newTime}
-                </h6>
+        <div className="postFeed__container">
+          {posts.map((post) => {
+            const postDate = new Date(post.date);
+            const newDate = postDate.toDateString();
+            const newTime = postDate.toTimeString();
+            return (
+              <div className="post__container" key={post.id}>
+                <div className="post__header">
+                  <div className="post__heading">
+                    <h5 className="font-effect-anaglyph">
+                      c/chupacabros &#183; Posted by{" "}
+                      <Link to={`/u/${post.user.id}`}>u/{post.user.name} </Link>
+                    </h5>
+                    {post.user.id ===
+                    parseInt(localStorage.getItem("chupacabro_user")) ? (
+                      ""
+                    ) : post.user.id !==
+                        parseInt(localStorage.getItem("chupacabro_user")) &&
+                      currentUserFollows.every((follow) => {
+                        return follow.followingId !== post.user.id;
+                      }) ? (
+                      <button
+                        id={post.user.id}
+                        className="follow__button"
+                        onClick={(evt) => {
+                          createFollow(evt).then(() =>
+                            ApiManager.fetchFollows().then((data) => {
+                              setFollows(data);
+                            })
+                          );
+                        }}
+                      >
+                        <span class="material-icons">add</span> Follow
+                      </button>
+                    ) : (
+                      <button
+                        id={post.user.id}
+                        className="following__botton"
+                        onClick={() => {
+                          const foundFollow = currentUserFollows.find(
+                            (follow) => {
+                              return follow.followingId === post.user.id;
+                            }
+                          );
 
-                {post.legitness >= 50 ? (
-                  <div className="legit-o-container">
-                    <h6 className="font-effect-anaglyph">Legit-O-Meter:</h6>
-                    {post.legitness}%
+                          ApiManager.deleteFollow(foundFollow.id).then(() =>
+                            ApiManager.fetchFollows().then((data) => {
+                              setFollows(data);
+                            })
+                          );
+                        }}
+                      >
+                        <span class="material-icons">done</span> Following
+                      </button>
+                    )}
                   </div>
-                ) : (
-                  ""
-                )}
-                <h5>{post.title}</h5>
-              </div>
-              <img className="post__image" src={post.imageUrl} alt="img" />
-              <div className="post__tagline">{post.text}</div>
-              <div className="post__cl__container">
-                <div>
+                  <h6 className="font-effect-anaglyph">
+                    {newDate} {newTime}
+                  </h6>
+
+                  {post.legitness >= 50 ? (
+                    <div className="legit-o-container">
+                      <h6 className="font-effect-anaglyph">Legit-O-Meter:</h6>
+                      {post.legitness}%
+                    </div>
+                  ) : (
+                    ""
+                  )}
+                  <h5>{post.title}</h5>
+                </div>
+                <img
+                  className="post__image"
+                  src={post.imageUrl}
+                  alt={`u/${post.user.name} · ${post.title}`}
+                />
+                <div className="post__tagline">{post.text}</div>
+                <div className="post__cl__container">
+                  <div>
+                    <button
+                      className="comment__btn"
+                      id={post.id}
+                      onClick={(evt) => {
+                        toggleComments
+                          ? setToggleComments(false)
+                          : setToggleComments(true);
+                      }}
+                    >
+                      <span className="material-icons">
+                        chat_bubble_outline
+                      </span>
+                      {post.comments?.length === 1
+                        ? "1 Comment"
+                        : `${post.comments?.length} Comments`}
+                    </button>
+                  </div>
                   <button
-                    className="comment__btn"
                     id={post.id}
+                    className="post__likes"
                     onClick={(evt) => {
-                      toggleComments
-                        ? setToggleComments(false)
-                        : setToggleComments(true);
+                      const foundPostLike = post.postLikes?.find((postLike) => {
+                        return (
+                          postLike.userId ===
+                          parseInt(localStorage.getItem("chupacabro_user"))
+                        );
+                      });
+
+                      return foundPostLike
+                        ? ApiManager.deletePostLike(foundPostLike.id).then(() =>
+                            ApiManager.fetchPosts().then((data) => {
+                              setPosts(data);
+                            })
+                          )
+                        : createPostLike(evt).then(() =>
+                            ApiManager.fetchPosts().then((data) => {
+                              setPosts(data);
+                            })
+                          );
                     }}
                   >
-                    <span className="material-icons">chat_bubble_outline</span>
-                    {post.comments?.length === 1
-                      ? "1 Comment"
-                      : `${post.comments?.length} Comments`}
+                    <span class="material-icons">thumb_up</span>
+                    {post.postLikes?.length === 1
+                      ? "1 Like"
+                      : `${post.postLikes?.length} Likes`}
                   </button>
-                </div>
-                <button
-                  id={post.id}
-                  className="post__likes"
-                  onClick={(evt) => {
-                    const foundPostLike = post.postLikes?.find((postLike) => {
-                      return (
-                        postLike.userId ===
-                        parseInt(localStorage.getItem("chupacabro_user"))
-                      );
-                    });
-
-                    return foundPostLike
-                      ? ApiManager.deletePostLike(foundPostLike.id).then(() =>
-                          ApiManager.fetchPosts().then((data) => {
-                            setPosts(data);
-                          })
-                        )
-                      : createPostLike(evt).then(() =>
-                          ApiManager.fetchPosts().then((data) => {
-                            setPosts(data);
-                          })
-                        );
-                  }}
-                >
-                  <span class="material-icons">thumb_up</span>
-                  {post.postLikes?.length === 1
-                    ? "1 Like"
-                    : `${post.postLikes?.length} Likes`}
-                </button>
-                {post.userId ===
-                parseInt(localStorage.getItem("chupacabro_user")) ? (
-                  <div>
-                    <button
-                      onClick={() => {
-                        ApiManager.deletePost(post.id).then(() => {
-                          ApiManager.fetchPosts().then((data) => {
-                            setPosts(data);
-                          });
-                        });
-                      }}
-                    >
-                      <span class="material-icons">delete</span>
-                    </button>
-                  </div>
-                ) : (
-                  ""
-                )}
-              </div>
-              <div className="post__comment">
-                {toggleComments ? (
-                  <div>
-                    <textarea
-                      id={post.id}
-                      rows="6"
-                      onChange={(evt) => {
-                        const copy = { ...newComment };
-                        copy.text = evt.target.value;
-                        updateComment(copy);
-                      }}
-                    >
-                      Add a new comment...
-                    </textarea>
+                  {post.userId ===
+                  parseInt(localStorage.getItem("chupacabro_user")) ? (
                     <div>
                       <button
-                        id={post.id}
-                        className="new__comment"
-                        onClick={(evt) => {
-                          createComment(evt).then(() => {
-                            fetchComments();
+                        onClick={() => {
+                          ApiManager.deletePost(post.id).then(() => {
+                            ApiManager.fetchPosts().then((data) => {
+                              setPosts(data);
+                            });
                           });
                         }}
                       >
-                        Submit new comment
+                        <span class="material-icons">delete</span>
                       </button>
                     </div>
-                  </div>
-                ) : (
-                  ""
-                )}
-                {toggleComments
-                  ? comments.map((comment) => {
-                      const foundCommentLike = comment.commentLikes?.find(
-                        (commentLike) => {
+                  ) : (
+                    ""
+                  )}
+                </div>
+                <div className="post__comment">
+                  {toggleComments ? (
+                    <div>
+                      <textarea
+                        id={post.id}
+                        rows="6"
+                        onChange={(evt) => {
+                          const copy = { ...newComment };
+                          copy.text = evt.target.value;
+                          updateComment(copy);
+                        }}
+                      >
+                        Add a new comment...
+                      </textarea>
+                      <div>
+                        <button
+                          id={post.id}
+                          className="new__comment"
+                          onClick={(evt) => {
+                            createComment(evt).then(() => {
+                              fetchComments();
+                            });
+                          }}
+                        >
+                          Submit new comment
+                        </button>
+                      </div>
+                    </div>
+                  ) : (
+                    ""
+                  )}
+                  {toggleComments
+                    ? comments.map((comment) => {
+                        const foundCommentLike = comment.commentLikes?.find(
+                          (commentLike) => {
+                            return (
+                              commentLike.userId ===
+                              parseInt(localStorage.getItem("chupacabro_user"))
+                            );
+                          }
+                        );
+
+                        if (comment.postId === post.id) {
                           return (
-                            commentLike.userId ===
-                            parseInt(localStorage.getItem("chupacabro_user"))
+                            <p key={comment.id} className="comments">
+                              <b>
+                                <img
+                                  src={comment.user.profileImg}
+                                  className="comment__profilePic"
+                                  alt=""
+                                />{" "}
+                                u/{comment.user.name}
+                              </b>{" "}
+                              <br></br>
+                              {comment.text}
+                              {foundCommentLike ? (
+                                <div>
+                                  <button
+                                    id={comment.id}
+                                    className="comment__unlike"
+                                    onClick={() => {
+                                      ApiManager.deleteCommentLike(
+                                        foundCommentLike.id
+                                      ).then(() => {
+                                        fetchComments();
+                                      });
+                                    }}
+                                  >
+                                    unlike comment
+                                  </button>
+                                </div>
+                              ) : (
+                                <div>
+                                  <button
+                                    id={comment.id}
+                                    className="comment__like"
+                                    onClick={(evt) => {
+                                      createCommentLike(evt).then(() => {
+                                        fetchComments();
+                                      });
+                                    }}
+                                  >
+                                    like comment
+                                  </button>
+                                </div>
+                              )}
+                            </p>
                           );
                         }
-                      );
-
-                      if (comment.postId === post.id) {
-                        return (
-                          <p key={comment.id} className="comments">
-                            <b>
-                              <img
-                                src={comment.user.profileImg}
-                                className="comment__profilePic"
-                                alt=""
-                              />{" "}
-                              u/{comment.user.name}
-                            </b>{" "}
-                            <br></br>
-                            {comment.text}
-                            {foundCommentLike ? (
-                              <div>
-                                <button
-                                  id={comment.id}
-                                  className="comment__unlike"
-                                  onClick={() => {
-                                    ApiManager.deleteCommentLike(
-                                      foundCommentLike.id
-                                    ).then(() => {
-                                      fetchComments();
-                                    });
-                                  }}
-                                >
-                                  unlike comment
-                                </button>
-                              </div>
-                            ) : (
-                              <div>
-                                <button
-                                  id={comment.id}
-                                  className="comment__like"
-                                  onClick={(evt) => {
-                                    createCommentLike(evt).then(() => {
-                                      fetchComments();
-                                    });
-                                  }}
-                                >
-                                  like comment
-                                </button>
-                              </div>
-                            )}
-                          </p>
-                        );
-                      }
-                    })
-                  : ""}
+                      })
+                    : ""}
+                </div>
               </div>
-            </div>
-          );
-        })}
-      </div>
-    </>
+            );
+          })}
+        </div>
+      </>
+    </SRLWrapper>
   );
 };
