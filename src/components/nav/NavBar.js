@@ -5,6 +5,7 @@ import "./NavBar.css";
 
 export const NavBar = () => {
   const [toggleCreate, setToggleCreate] = useState(false);
+  const [toggleDropwDown, setToggleDropDown] = useState(false);
   const [users, setUsers] = useState([]);
 
   useEffect(() => {
@@ -82,6 +83,35 @@ export const NavBar = () => {
           height="66px"
           width="66px"
         />
+      </div>
+      <div className="dropdown__container">
+        <button
+          onClick={() => {
+            setToggleDropDown(!toggleDropwDown);
+          }}
+        >
+          <span class="material-icons">arrow_drop_down</span>
+        </button>
+        {toggleDropwDown ? (
+          <ul className="dropdown__menu">
+            <li>My Profile</li>
+            <div className="logout">
+              <li className="navbar__item">
+                <Link
+                  className="navbar__link"
+                  to="#"
+                  onClick={() => {
+                    localStorage.removeItem("chupacabro_user");
+                  }}
+                >
+                  <h3> Logout </h3>
+                </Link>
+              </li>
+            </div>
+          </ul>
+        ) : (
+          ""
+        )}
       </div>
     </div>
   );

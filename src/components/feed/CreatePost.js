@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useHistory } from "react-router";
+import ApiManager from "../ApiManager";
 
 export const CreatePost = () => {
   const [post, updatePost] = useState({
@@ -113,7 +114,7 @@ export const CreatePost = () => {
         className="btn btn-primary"
         onClick={() => {
           post.title && post.imageUrl !== ""
-            ? createPost().then(history.push("/"))
+            ? createPost().then(history.push("/")).then(ApiManager.fetchPosts())
             : window.alert("Fill out all required fields");
         }}
       >

@@ -5,7 +5,6 @@
   display: flex;
   flex-wrap: nowrap;
   justify-content: space-between;
-  /* text-align: center; */
 }
 
 .navbar__item {
@@ -13,11 +12,9 @@
   list-style-type: none;
 }
 .create {
-  /* text-align: center; */
   font-family: "Fjalla One", sans-serif;
   font-size: 23px;
-  /* padding-right: 8em;
-  padding-bottom: 0; */
+
   color: black;
 }
 .logout {

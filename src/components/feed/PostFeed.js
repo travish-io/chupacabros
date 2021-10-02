@@ -356,4 +356,3 @@ export const PostFeed = () => {
     </>
   );
 };
-// it is not liking the legit-o-meter haha. prob delete it
