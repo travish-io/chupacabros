@@ -21,33 +21,25 @@ export const NavBar = () => {
     });
   }, []);
 
-  useEffect(() => {
-    UpdateSeen();
-    ApiManager.fetchProbes().then((data) => {
-      setProbes(data);
-    });
-  }, [seen]);
+  // useEffect(() => {
+  //   UpdateSeen();
+  //   ApiManager.fetchProbes().then((data) => {
+  //     setProbes(data);
+  //   });
+  // }, [seen]);
 
-  const UpdateSeen = () => {
-    probes.map((probe) => {
-      if (
-        probe.recipientId ===
-          parseInt(localStorage.getItem("chupacabro_user")) &&
-        probe.seen === false
-      ) {
-        const newData = { seen: true };
-        const fetchOption = {
-          method: "PATCH",
-          headers: {
-            "Content-type": "application/json",
-          },
-          body: JSON.stringify(newData),
-        };
-        return fetch(`http://localhost:8088/probes/${probe.id}`, fetchOption)
-          .then((Response) => Response.json())
-          .then(() => ApiManager.fetchProbes());
-      }
-    });
+  const UpdateSeen = (id) => {
+    const newData = { seen: true };
+    const fetchOption = {
+      method: "PATCH",
+      headers: {
+        "Content-type": "application/json",
+      },
+      body: JSON.stringify(newData),
+    };
+    return fetch(`http://localhost:8088/probes/${id}`, fetchOption).then(
+      (Response) => Response.json()
+    );
   };
   return (
     <div className="navbar">
@@ -144,12 +136,21 @@ export const NavBar = () => {
             <div className="logout">
               <button
                 onClick={() => {
-                  setSeen(seen + 1);
-                  setToggleProbes(false);
-                  setToggleDropDown(true);
+                  probes.map((probe) => {
+                    if (
+                      probe.recipientId ===
+                        parseInt(localStorage.getItem("chupacabro_user")) &&
+                      probe.seen === false
+                    ) {
+                      UpdateSeen(probe.id);
+                    }
+                  });
+                  ApiManager.fetchProbes();
+                  setProbes();
+                  setToggleProbes(!toggleProbes);
                 }}
               >
-                Back
+                Clear Probes
               </button>
               {probes.map((probe) => {
                 if (

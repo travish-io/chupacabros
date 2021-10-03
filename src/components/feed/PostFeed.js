@@ -16,7 +16,6 @@ export const PostFeed = () => {
   const [commentLikes, setCommentLikes] = useState([]);
   const [users, setUsers] = useState([]);
   const [toggleComments, setToggleComments] = useState(false);
-  const [toggleCreate, setToggleCreate] = useState(false);
 
   useEffect(() => {
     ApiManager.fetchUsers().then((data) => {
@@ -132,8 +131,35 @@ export const PostFeed = () => {
         <div className="postFeed__container">
           {posts.map((post) => {
             const postDate = new Date(post.date);
-            const newDate = postDate.toDateString();
-            const newTime = postDate.toTimeString();
+            // const newDate = postDate.toDateString();
+            // const newTime = postDate.toTimeString();
+            function timeSince(date) {
+              var seconds = Math.floor((new Date() - date) / 1000);
+
+              var interval = seconds / 31536000;
+
+              if (interval > 1) {
+                return Math.floor(interval) + " years";
+              }
+              interval = seconds / 2592000;
+              if (interval > 1) {
+                return Math.floor(interval) + " months";
+              }
+              interval = seconds / 86400;
+              if (interval > 1) {
+                return Math.floor(interval) + " days";
+              }
+              interval = seconds / 3600;
+              if (interval > 1) {
+                return Math.floor(interval) + " hours";
+              }
+              interval = seconds / 60;
+              if (interval > 1) {
+                return Math.floor(interval) + " minutes";
+              }
+              return Math.floor(seconds) + " seconds";
+            }
+            // var aDay = 24 * 60 * 60 * 1000;
             return (
               <div className="post__container" key={post.id}>
                 <div className="post__header">
@@ -141,6 +167,7 @@ export const PostFeed = () => {
                     <h5 className="font-effect-anaglyph">
                       c/chupacabros &#183; Posted by{" "}
                       <Link to={`/u/${post.user.id}`}>u/{post.user.name} </Link>
+                      &#183; <small> {timeSince(postDate)} ago </small>
                     </h5>
                     {post.user.id ===
                     parseInt(localStorage.getItem("chupacabro_user")) ? (
@@ -185,10 +212,6 @@ export const PostFeed = () => {
                       </button>
                     )}
                   </div>
-                  <h6 className="font-effect-anaglyph">
-                    {newDate} {newTime}
-                  </h6>
-
                   {post.legitness >= 50 ? (
                     <div className="legit-o-container">
                       <h6 className="font-effect-anaglyph">Legit-O-Meter:</h6>
@@ -197,7 +220,7 @@ export const PostFeed = () => {
                   ) : (
                     ""
                   )}
-                  <h5>{post.title}</h5>
+                  <h4>{post.title}</h4>
                 </div>
                 <img
                   className="post__image"
@@ -327,37 +350,26 @@ export const PostFeed = () => {
                               </b>{" "}
                               <br></br>
                               {comment.text}
-                              {foundCommentLike ? (
-                                <div>
-                                  <button
-                                    id={comment.id}
-                                    className="comment__unlike"
-                                    onClick={() => {
-                                      ApiManager.deleteCommentLike(
-                                        foundCommentLike.id
-                                      ).then(() => {
-                                        fetchComments();
-                                      });
-                                    }}
-                                  >
-                                    unlike comment
-                                  </button>
-                                </div>
-                              ) : (
-                                <div>
-                                  <button
-                                    id={comment.id}
-                                    className="comment__like"
-                                    onClick={(evt) => {
-                                      createCommentLike(evt).then(() => {
-                                        fetchComments();
-                                      });
-                                    }}
-                                  >
-                                    like comment
-                                  </button>
-                                </div>
-                              )}
+                              <div>
+                                <button
+                                  id={comment.id}
+                                  className="comment__unlike"
+                                  onClick={(evt) => {
+                                    foundCommentLike
+                                      ? ApiManager.deleteCommentLike(
+                                          foundCommentLike.id
+                                        ).then(() => {
+                                          fetchComments();
+                                        })
+                                      : createCommentLike(evt).then(() => {
+                                          fetchComments();
+                                        });
+                                  }}
+                                >
+                                  <span class="material-icons">thumb_up</span>
+                                  {comment.commentLikes?.length}
+                                </button>
+                              </div>
                             </p>
                           );
                         }

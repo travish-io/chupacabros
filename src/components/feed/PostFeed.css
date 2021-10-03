@@ -142,6 +142,10 @@
   display: flex;
   justify-content: space-between;
 }
+.post__heading,
+h5 {
+  margin-bottom: 3px;
+}
 .user__profilePic {
   height: 100px;
   width: 160px;
@@ -156,6 +160,10 @@
 }
 .legit-o-meter {
   display: flex;
+}
+.legit-o-meter,
+h6 {
+  margin: 3px 0 3px 0;
 }
 .legit-1 {
   background-color: red;

@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useHistory } from "react-router";
 import ApiManager from "../ApiManager";
 import { Link } from "react-router-dom";
+import { axios } from "axios";
 export const CreatePost = () => {
   const [post, updatePost] = useState({
     title: "",
@@ -36,9 +37,9 @@ export const CreatePost = () => {
       body: JSON.stringify(newData),
     };
 
-    return fetch("http://localhost:8088/posts", fetchOption).then((Response) =>
-      Response.json()
-    );
+    return fetch("http://localhost:8088/posts", fetchOption)
+      .then((Response) => Response.json())
+      .then(ApiManager.fetchPosts());
   };
 
   return (
