@@ -314,9 +314,8 @@ export const PostFeed = () => {
                           className="new__comment"
                           onClick={(evt) => {
                             createComment(evt).then(() => {
-                              fetchComments().then(() => {
-                                updateComment({ text: "" });
-                              });
+                              fetchComments();
+                              updateComment({ text: "" });
                             });
                           }}
                         >
