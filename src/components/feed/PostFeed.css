@@ -72,9 +72,10 @@
 }
 
 .post__container {
-  margin: 5% 25%;
+  margin: 5% 35%;
   flex-basis: 50%;
   border: 1px black solid;
+  max-width: 30%;
 }
 
 .post__image {
