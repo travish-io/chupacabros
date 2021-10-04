@@ -5,11 +5,16 @@
   display: flex;
   flex-wrap: nowrap;
   justify-content: space-between;
+  position: relative;
 }
 
 .navbar__item {
   flex-basis: 20%;
   list-style-type: none;
+  font-family: "Fjalla One", sans-serif;
+  font-size: 23px;
+  margin-right: 6px;
+  border-bottom: black 1px solid;
 }
 .create {
   font-family: "Fjalla One", sans-serif;
@@ -19,7 +24,7 @@
 .logout {
   font-family: "Fjalla One", sans-serif;
   font-size: 23px;
-  padding-right: 5em;
+  padding-right: 2em;
 }
 .navbar__link {
   text-decoration: none;
@@ -30,4 +35,26 @@
   color: black;
   font-size: 30px;
   text-decoration: none;
+}
+.dropdown__button {
+  align-self: center;
+  /* flex: auto; */
+}
+.dropdown__menu {
+  align-self: flex-end;
+  flex-grow: 4;
+}
+.current__user {
+  align-self: center;
+  /* flex: auto; */
+}
+.user__dropdown__container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.user__button {
+  display: flex;
+  justify-content: right;
+  /* flex-direction: column; */
 }

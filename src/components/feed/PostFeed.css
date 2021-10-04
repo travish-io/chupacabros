@@ -9,17 +9,7 @@
   text-decoration: none;
   color: black;
 }
-.create {
-}
-.current__user {
-}
-.dropdown__container {
-}
-.dropdown__menu {
-}
-.navbar__item {
-  border-bottom: black 1px solid;
-}
+
 .noPosts {
   text-align: center;
 }
@@ -125,6 +115,18 @@
   display: flex;
   justify-content: center;
 }
+.probe__button,
+.follow__button,
+.following__button {
+  width: 100px;
+  height: 33px;
+  transform: translateY(30%);
+}
+.post__follow__button,
+.post__following__button {
+  padding: 1px;
+  margin: 3px 3px 0 0;
+}
 .profile__stats {
   padding: 1rem;
 }
@@ -132,6 +134,9 @@
   height: 30px;
   width: 36px;
   border-radius: 50%;
+}
+.comment__textarea {
+  width: calc(100% - 23px);
 }
 .post__profilePic {
   height: 30px;
@@ -141,6 +146,7 @@
 .post__heading {
   display: flex;
   justify-content: space-between;
+  position: relative;
 }
 .post__heading,
 h5 {

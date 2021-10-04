@@ -166,12 +166,12 @@ export const UserProfile = () => {
                   );
                 }}
               >
-                <span class="material-icons">add</span> Follow
+                <span className="material-icons">add</span> Follow
               </button>
             ) : (
               <button
                 id={user.id}
-                className="following__botton"
+                className="following__button"
                 onClick={() => {
                   const foundFollow = currentUserFollows.find((follow) => {
                     return follow.followingId === user.id;
@@ -184,7 +184,7 @@ export const UserProfile = () => {
                   );
                 }}
               >
-                <span class="material-icons">done</span> Following
+                <span className="material-icons">done</span> Following
               </button>
             )}
           </div>
@@ -209,18 +209,43 @@ export const UserProfile = () => {
         <div className="postFeed__container">
           {posts.map((post) => {
             const postDate = new Date(post.date);
-            const newDate = postDate.toDateString();
-            const newTime = postDate.toTimeString();
+            // const newDate = postDate.toDateString();
+            // const newTime = postDate.toTimeString();
+            function timeSince(date) {
+              var seconds = Math.floor((new Date() - date) / 1000);
 
+              var interval = seconds / 31536000;
+
+              if (interval > 1) {
+                return Math.floor(interval) + " years";
+              }
+              interval = seconds / 2592000;
+              if (interval > 1) {
+                return Math.floor(interval) + " months";
+              }
+              interval = seconds / 86400;
+              if (interval > 1) {
+                return Math.floor(interval) + " days";
+              }
+              interval = seconds / 3600;
+              if (interval > 1) {
+                return Math.floor(interval) + " hours";
+              }
+              interval = seconds / 60;
+              if (interval > 1) {
+                return Math.floor(interval) + " minutes";
+              }
+              return Math.floor(seconds) + " seconds";
+            }
+            // var aDay = 24 * 60 * 60 * 1000;
             return (
               <div className="post__container" key={post.id}>
                 <div className="post__header">
                   <h5 className="font-effect-anaglyph">
-                    c/chupacabros &#183; Posted by u/{post.user.name}
+                    c/chupacabros &#183; Posted by u/{post.user.name} &#183;{" "}
+                    <small> {timeSince(postDate)} ago </small>
                   </h5>
-                  <h6 className="font-effect-anaglyph">
-                    {newDate} {newTime}
-                  </h6>
+
                   <h5>{post.title}</h5>
                 </div>
                 <img
@@ -272,28 +297,26 @@ export const UserProfile = () => {
                           );
                     }}
                   >
-                    <span class="material-icons">thumb_up</span>
+                    <span className="material-icons">thumb_up</span>
                     {post.postLikes?.length === 1
                       ? "1 Like"
                       : `${post.postLikes?.length} Likes`}
                   </button>
                   {post.userId ===
                   parseInt(localStorage.getItem("chupacabro_user")) ? (
-                    <div>
-                      <button
-                        onClick={() => {
-                          ApiManager.deletePost(post.id).then(() => {
-                            ApiManager.fetchPostsByUser(post.userId).then(
-                              (data) => {
-                                setPosts(data);
-                              }
-                            );
-                          });
-                        }}
-                      >
-                        <span class="material-icons">delete</span>
-                      </button>
-                    </div>
+                    <button
+                      onClick={() => {
+                        ApiManager.deletePost(post.id).then(() => {
+                          ApiManager.fetchPostsByUser(post.userId).then(
+                            (data) => {
+                              setPosts(data);
+                            }
+                          );
+                        });
+                      }}
+                    >
+                      <span className="material-icons">delete</span>
+                    </button>
                   ) : (
                     ""
                   )}
@@ -302,24 +325,29 @@ export const UserProfile = () => {
                   {toggleComments ? (
                     <div>
                       <textarea
+                        className="comment__textarea"
                         id={post.id}
                         rows="6"
+                        value={newComment.text}
+                        placeholder="Add a new comment..."
                         onChange={(evt) => {
                           const copy = { ...newComment };
                           copy.text = evt.target.value;
                           updateComment(copy);
                         }}
-                      >
-                        Add a new comment...
-                      </textarea>
+                      ></textarea>
                       <div>
                         <button
                           id={post.id}
                           className="new__comment"
                           onClick={(evt) => {
-                            createComment(evt).then(() => {
-                              fetchComments();
-                            });
+                            createComment(evt)
+                              .then(() => {
+                                fetchComments();
+                              })
+                              .then(() => {
+                                updateComment({ text: "" });
+                              });
                           }}
                         >
                           Submit new comment
@@ -366,7 +394,10 @@ export const UserProfile = () => {
                                       });
                                     }}
                                   >
-                                    unlike comment
+                                    <span className="material-icons">
+                                      thumb_up
+                                    </span>
+                                    {comment.commentLikes?.length}
                                   </button>
                                 </div>
                               ) : (
@@ -380,7 +411,10 @@ export const UserProfile = () => {
                                       });
                                     }}
                                   >
-                                    like comment
+                                    <span className="material-icons">
+                                      thumb_up
+                                    </span>
+                                    {comment.commentLikes?.length}
                                   </button>
                                 </div>
                               )}
