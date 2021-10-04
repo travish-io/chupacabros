@@ -38,7 +38,7 @@
 }
 .dropdown__button {
   align-self: center;
-  /* flex: auto; */
+  margin: 3px;
 }
 .dropdown__menu {
   align-self: flex-end;
@@ -46,15 +46,14 @@
 }
 .current__user {
   align-self: center;
-  /* flex: auto; */
 }
 .user__dropdown__container {
   display: flex;
   flex-direction: column;
   justify-content: center;
+  padding: 5px;
 }
 .user__button {
   display: flex;
   justify-content: right;
-  /* flex-direction: column; */
 }
