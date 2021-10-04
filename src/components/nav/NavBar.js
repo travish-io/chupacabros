@@ -58,25 +58,32 @@ export const NavBar = () => {
           />
         </Link>
       </div>
-      <div className="current__user">
-        {users.map((user) => {
-          if (user.id === parseInt(localStorage.getItem("chupacabro_user"))) {
-            return <h2 className="font-effect-anaglyph"> u/{user.name} </h2>;
-          }
-        })}
-      </div>
-      <div className="dropdown__container">
-        <button
-          onClick={() => {
-            setToggleDropDown(!toggleDropwDown);
-            setToggleProbes(false);
-          }}
-        >
-          <span class="material-icons">arrow_drop_down</span>
-        </button>
+      <div className="user__dropdown__container">
+        <div className="user__button">
+          {users.map((user) => {
+            if (user.id === parseInt(localStorage.getItem("chupacabro_user"))) {
+              return (
+                <h2 style={{ margin: "0" }} className="current__user">
+                  {" "}
+                  u/{user.name}{" "}
+                </h2>
+              );
+            }
+          })}
+
+          <button
+            className="dropdown__button"
+            onClick={() => {
+              setToggleDropDown(!toggleDropwDown);
+              setToggleProbes(false);
+            }}
+          >
+            <span className="material-icons">arrow_drop_down</span>
+          </button>
+        </div>
         {toggleDropwDown && !toggleProbes ? (
-          <ul className="dropdown__menu">
-            <div className="logout">
+          <div className="dropdown__menu">
+            <ul>
               {users.map((user) => {
                 if (
                   user.id === parseInt(localStorage.getItem("chupacabro_user"))
@@ -102,8 +109,7 @@ export const NavBar = () => {
                   );
                 }
               })}
-            </div>
-            <div className="logout">
+
               <li className="navbar__item">
                 <Link
                   className="navbar__link"
@@ -116,8 +122,7 @@ export const NavBar = () => {
                   <h3> Probes </h3>
                 </Link>
               </li>
-            </div>
-            <div className="logout">
+
               <li className="navbar__item">
                 <Link
                   className="navbar__link"
@@ -129,8 +134,8 @@ export const NavBar = () => {
                   <h3> Logout </h3>
                 </Link>
               </li>
-            </div>
-          </ul>
+            </ul>
+          </div>
         ) : toggleProbes && !toggleDropwDown ? (
           <ul className="dropdown__menu">
             <div className="logout">

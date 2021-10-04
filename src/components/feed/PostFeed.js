@@ -179,7 +179,7 @@ export const PostFeed = () => {
                       }) ? (
                       <button
                         id={post.user.id}
-                        className="follow__button"
+                        className="post__follow__button"
                         onClick={(evt) => {
                           createFollow(evt).then(() =>
                             ApiManager.fetchFollows().then((data) => {
@@ -188,12 +188,12 @@ export const PostFeed = () => {
                           );
                         }}
                       >
-                        <span class="material-icons">add</span> Follow
+                        <span className="material-icons">add</span> Follow
                       </button>
                     ) : (
                       <button
                         id={post.user.id}
-                        className="following__botton"
+                        className="post__following__button"
                         onClick={() => {
                           const foundFollow = currentUserFollows.find(
                             (follow) => {
@@ -208,7 +208,7 @@ export const PostFeed = () => {
                           );
                         }}
                       >
-                        <span class="material-icons">done</span> Following
+                        <span className="material-icons">done</span> Following
                       </button>
                     )}
                   </div>
@@ -271,26 +271,24 @@ export const PostFeed = () => {
                           );
                     }}
                   >
-                    <span class="material-icons">thumb_up</span>
+                    <span className="material-icons">thumb_up</span>
                     {post.postLikes?.length === 1
                       ? "1 Like"
                       : `${post.postLikes?.length} Likes`}
                   </button>
                   {post.userId ===
                   parseInt(localStorage.getItem("chupacabro_user")) ? (
-                    <div>
-                      <button
-                        onClick={() => {
-                          ApiManager.deletePost(post.id).then(() => {
-                            ApiManager.fetchPosts().then((data) => {
-                              setPosts(data);
-                            });
+                    <button
+                      onClick={() => {
+                        ApiManager.deletePost(post.id).then(() => {
+                          ApiManager.fetchPosts().then((data) => {
+                            setPosts(data);
                           });
-                        }}
-                      >
-                        <span class="material-icons">delete</span>
-                      </button>
-                    </div>
+                        });
+                      }}
+                    >
+                      <span className="material-icons">delete</span>
+                    </button>
                   ) : (
                     ""
                   )}
@@ -299,23 +297,26 @@ export const PostFeed = () => {
                   {toggleComments ? (
                     <div>
                       <textarea
+                        className="comment__textarea"
                         id={post.id}
                         rows="6"
+                        value={newComment.text}
+                        placeholder="Add a new comment..."
                         onChange={(evt) => {
                           const copy = { ...newComment };
                           copy.text = evt.target.value;
                           updateComment(copy);
                         }}
-                      >
-                        Add a new comment...
-                      </textarea>
+                      ></textarea>
                       <div>
                         <button
                           id={post.id}
                           className="new__comment"
                           onClick={(evt) => {
                             createComment(evt).then(() => {
-                              fetchComments();
+                              fetchComments().then(() => {
+                                updateComment({ text: "" });
+                              });
                             });
                           }}
                         >
@@ -345,31 +346,48 @@ export const PostFeed = () => {
                                   src={comment.user.profileImg}
                                   className="comment__profilePic"
                                   alt=""
-                                />{" "}
+                                />
                                 u/{comment.user.name}
                               </b>{" "}
                               <br></br>
                               {comment.text}
-                              <div>
-                                <button
-                                  id={comment.id}
-                                  className="comment__unlike"
-                                  onClick={(evt) => {
-                                    foundCommentLike
-                                      ? ApiManager.deleteCommentLike(
-                                          foundCommentLike.id
-                                        ).then(() => {
-                                          fetchComments();
-                                        })
-                                      : createCommentLike(evt).then(() => {
-                                          fetchComments();
-                                        });
-                                  }}
-                                >
-                                  <span class="material-icons">thumb_up</span>
-                                  {comment.commentLikes?.length}
-                                </button>
-                              </div>
+                              {foundCommentLike ? (
+                                <div>
+                                  <button
+                                    id={comment.id}
+                                    className="comment__unlike"
+                                    onClick={() => {
+                                      ApiManager.deleteCommentLike(
+                                        foundCommentLike.id
+                                      ).then(() => {
+                                        fetchComments();
+                                      });
+                                    }}
+                                  >
+                                    <span className="material-icons">
+                                      thumb_up
+                                    </span>
+                                    {comment.commentLikes?.length}
+                                  </button>
+                                </div>
+                              ) : (
+                                <div>
+                                  <button
+                                    id={comment.id}
+                                    className="comment__like"
+                                    onClick={(evt) => {
+                                      createCommentLike(evt).then(() => {
+                                        fetchComments();
+                                      });
+                                    }}
+                                  >
+                                    <span className="material-icons">
+                                      thumb_up
+                                    </span>
+                                    {comment.commentLikes?.length}
+                                  </button>
+                                </div>
+                              )}
                             </p>
                           );
                         }
