@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useHistory } from "react-router";
 import ApiManager from "../ApiManager";
 import { Link } from "react-router-dom";
-import { axios } from "axios";
+
 export const CreatePost = () => {
   const [post, updatePost] = useState({
     title: "",
@@ -115,7 +115,7 @@ export const CreatePost = () => {
         className="btn btn-primary"
         onClick={() => {
           post.title && post.imageUrl !== ""
-            ? createPost().then(history.push("/")).then(ApiManager.fetchPosts())
+            ? createPost().then(history.push("/"))
             : window.alert("Fill out all required fields");
         }}
       >

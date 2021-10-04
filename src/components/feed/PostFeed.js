@@ -188,7 +188,10 @@ export const PostFeed = () => {
                           );
                         }}
                       >
-                        <span className="material-icons">add</span> Follow
+                        <span className="material-icons" id={post.user.id}>
+                          add
+                        </span>{" "}
+                        Follow
                       </button>
                     ) : (
                       <button
@@ -271,7 +274,9 @@ export const PostFeed = () => {
                           );
                     }}
                   >
-                    <span className="material-icons">thumb_up</span>
+                    <span className="material-icons" id={post.id}>
+                      thumb_up
+                    </span>
                     {post.postLikes?.length === 1
                       ? "1 Like"
                       : `${post.postLikes?.length} Likes`}
@@ -287,7 +292,9 @@ export const PostFeed = () => {
                         });
                       }}
                     >
-                      <span className="material-icons">delete</span>
+                      <span className="material-icons" id={post.id}>
+                        delete
+                      </span>
                     </button>
                   ) : (
                     ""
@@ -332,14 +339,16 @@ export const PostFeed = () => {
                           (commentLike) => {
                             return (
                               commentLike.userId ===
-                              parseInt(localStorage.getItem("chupacabro_user"))
+                                parseInt(
+                                  localStorage.getItem("chupacabro_user")
+                                ) && commentLike.commentId === comment.id
                             );
                           }
                         );
 
                         if (comment.postId === post.id) {
                           return (
-                            <p key={comment.id} className="comments">
+                            <p className="comments">
                               <b>
                                 <img
                                   src={comment.user.profileImg}
@@ -363,7 +372,10 @@ export const PostFeed = () => {
                                       });
                                     }}
                                   >
-                                    <span className="material-icons">
+                                    <span
+                                      className="material-icons"
+                                      id={comment.id}
+                                    >
                                       thumb_up
                                     </span>
                                     {comment.commentLikes?.length}
@@ -380,7 +392,10 @@ export const PostFeed = () => {
                                       });
                                     }}
                                   >
-                                    <span className="material-icons">
+                                    <span
+                                      className="material-icons"
+                                      id={comment.id}
+                                    >
                                       thumb_up
                                     </span>
                                     {comment.commentLikes?.length}
