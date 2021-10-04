@@ -5,7 +5,21 @@
   flex-direction: column;
   justify-content: center;
 }
-
+.create__link {
+  text-decoration: none;
+  color: black;
+}
+.create {
+}
+.current__user {
+}
+.dropdown__container {
+}
+.dropdown__menu {
+}
+.navbar__item {
+  border-bottom: black 1px solid;
+}
 .noPosts {
   text-align: center;
 }
@@ -101,7 +115,92 @@
   display: flex;
   justify-content: space-between;
 }
-.user__profile,
-h1 {
+.user__Profile {
+  margin-top: 6rem;
+  display: flex;
+  justify-content: center;
+}
+.profile__buttons {
+  margin: 2rem, 0, 0, 13rem;
+  display: flex;
+  justify-content: center;
+}
+.profile__stats {
+  padding: 1rem;
+}
+.comment__profilePic {
+  height: 30px;
+  width: 36px;
+  border-radius: 50%;
+}
+.post__profilePic {
+  height: 30px;
+  width: 36px;
+  border-radius: 50%;
+}
+.post__heading {
+  display: flex;
+  justify-content: space-between;
+}
+.post__heading,
+h5 {
+  margin-bottom: 3px;
+}
+.user__profilePic {
+  height: 100px;
+  width: 160px;
+  border-radius: 50%;
+  margin: 10px;
+}
+.create {
   text-align: center;
+}
+.legit__slider {
+  width: 175px;
+}
+.legit-o-meter {
+  display: flex;
+}
+.legit-o-meter,
+h6 {
+  margin: 3px 0 3px 0;
+}
+.legit-1 {
+  background-color: red;
+}
+.legit-2 {
+  background-color: red;
+}
+.legit-3 {
+  background-color: red;
+}
+.legit-4 {
+  background-color: red;
+}
+.legit-5 {
+  background-color: darkorange;
+  color: darkorange;
+}
+.legit-6 {
+  background-color: darkorange;
+  color: darkorange;
+}
+.legit-7 {
+  background-color: goldenrod;
+  color: goldenrod;
+}
+.legit-8 {
+  background-color: goldenrod;
+  color: goldenrod;
+}
+.legit-9 {
+  background-color: green;
+  color: green;
+}
+.legit-10 {
+  background-color: green;
+  color: green;
+}
+.legit-empty {
+  color: white;
 }

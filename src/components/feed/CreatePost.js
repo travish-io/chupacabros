@@ -1,12 +1,22 @@
 import React, { useState } from "react";
 import { useHistory } from "react-router";
+import ApiManager from "../ApiManager";
+import { Link } from "react-router-dom";
+import { axios } from "axios";
 export const CreatePost = () => {
   const [post, updatePost] = useState({
     title: "",
     imageUrl: "",
     text: "",
+    legitness: 0,
   });
+  const [legitness, setLegitness] = useState(0);
   const history = useHistory();
+
+  const handleSlider = (evt) => {
+    setLegitness(evt.target.value);
+    console.log(legitness);
+  };
 
   const createPost = () => {
     const newData = {
@@ -15,6 +25,7 @@ export const CreatePost = () => {
       imageUrl: post.imageUrl,
       text: post.text,
       date: Date.now(),
+      legitness: parseInt(legitness),
       location: "",
     };
 
@@ -26,9 +37,9 @@ export const CreatePost = () => {
       body: JSON.stringify(newData),
     };
 
-    return fetch("http://localhost:8088/posts", fetchOption).then((Response) =>
-      Response.json()
-    );
+    return fetch("http://localhost:8088/posts", fetchOption)
+      .then((Response) => Response.json())
+      .then(ApiManager.fetchPosts());
   };
 
   return (
@@ -84,15 +95,36 @@ export const CreatePost = () => {
           />
         </div>
       </fieldset>
+      <fieldset>
+        <div className="legit__container">
+          <label htmlFor="range">How Legit is this Sighting?</label>
+          <input
+            className="legit__slider"
+            id="legitness"
+            type="range"
+            min="0"
+            max="100"
+            value={legitness}
+            onChange={handleSlider}
+            step="5"
+          />
+          {legitness}%
+        </div>
+      </fieldset>
       <button
         className="btn btn-primary"
         onClick={() => {
           post.title && post.imageUrl !== ""
-            ? createPost().then(history.push("/"))
+            ? createPost().then(history.push("/")).then(ApiManager.fetchPosts())
             : window.alert("Fill out all required fields");
         }}
       >
-        Submit New Post
+        Submit New Sighting
+      </button>
+      <button className="btn btn-primary">
+        <Link className="create__link" to="/">
+          Discard Sighting
+        </Link>
       </button>
     </form>
   );
