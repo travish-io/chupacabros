@@ -127,11 +127,12 @@
 .post__follow__button,
 .post__following__button {
   padding: 1px;
-  margin: 3px 3px 0 0;
+  margin: 13px 6px 0 0;
 }
 .profile__stats {
   padding: 1rem;
 }
+
 .comment__profilePic {
   height: 30px;
   width: 36px;
@@ -139,6 +140,9 @@
 }
 .comment__textarea {
   width: calc(100% - 23px);
+}
+.comment__like {
+  margin-top: 3px;
 }
 .post__profilePic {
   height: 30px;

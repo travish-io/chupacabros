@@ -194,25 +194,27 @@ export const PostFeed = () => {
                         Follow
                       </button>
                     ) : (
-                      <button
-                        id={post.user.id}
-                        className="post__following__button"
-                        onClick={() => {
-                          const foundFollow = currentUserFollows.find(
-                            (follow) => {
-                              return follow.followingId === post.user.id;
-                            }
-                          );
+                      <small>
+                        <button
+                          id={post.user.id}
+                          className="post__following__button"
+                          onClick={() => {
+                            const foundFollow = currentUserFollows.find(
+                              (follow) => {
+                                return follow.followingId === post.user.id;
+                              }
+                            );
 
-                          ApiManager.deleteFollow(foundFollow.id).then(() =>
-                            ApiManager.fetchFollows().then((data) => {
-                              setFollows(data);
-                            })
-                          );
-                        }}
-                      >
-                        <span className="material-icons">done</span> Following
-                      </button>
+                            ApiManager.deleteFollow(foundFollow.id).then(() =>
+                              ApiManager.fetchFollows().then((data) => {
+                                setFollows(data);
+                              })
+                            );
+                          }}
+                        >
+                          <span className="material-icons">done</span> Following
+                        </button>
+                      </small>
                     )}
                   </div>
                   {post.legitness >= 50 ? (
@@ -348,17 +350,19 @@ export const PostFeed = () => {
 
                         if (comment.postId === post.id) {
                           return (
-                            <p className="comments">
-                              <b>
-                                <img
-                                  src={comment.user.profileImg}
-                                  className="comment__profilePic"
-                                  alt=""
-                                />
-                                u/{comment.user.name}
-                              </b>{" "}
-                              <br></br>
-                              {comment.text}
+                            <div className="comments">
+                              <p>
+                                <b>
+                                  <img
+                                    src={comment.user.profileImg}
+                                    className="comment__profilePic"
+                                    alt=""
+                                  />
+                                  u/{comment.user.name}
+                                </b>{" "}
+                                <br></br>
+                                {comment.text}
+                              </p>
                               {foundCommentLike ? (
                                 <div>
                                   <button
@@ -402,7 +406,7 @@ export const PostFeed = () => {
                                   </button>
                                 </div>
                               )}
-                            </p>
+                            </div>
                           );
                         }
                       })

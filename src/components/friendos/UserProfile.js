@@ -190,7 +190,7 @@ export const UserProfile = () => {
                 <span className="material-icons" id={user.id}>
                   done
                 </span>{" "}
-                Following
+                <small> Following </small>
               </button>
             )}
           </div>
