@@ -112,6 +112,7 @@ h4 {
   justify-content: space-between;
   padding-top: 1px;
   border-top: 0.8px solid rgba(128, 128, 128, 0.199);
+  background: #e5e6eb69;
 }
 .user__Profile {
   margin-top: 1.6rem;
@@ -159,6 +160,8 @@ h4 {
   display: flex;
   justify-content: space-between;
   position: relative;
+  border-bottom: 0.6px solid #b9b5b55e;
+  background: #020a361a;
 }
 .post__heading,
 h5 {

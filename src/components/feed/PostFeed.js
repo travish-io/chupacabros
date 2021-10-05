@@ -222,7 +222,7 @@ export const PostFeed = () => {
                   {post.legitness >= 50 ? (
                     <div className="legit-o-container">
                       <h6 className="font-effect-anaglyph">Legit-O-Meter:</h6>
-                      {post.legitness}%
+                      <small> {post.legitness}% Legit </small>
                     </div>
                   ) : (
                     ""
