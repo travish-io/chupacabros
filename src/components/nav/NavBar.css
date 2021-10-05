@@ -43,6 +43,7 @@
 .dropdown__menu {
   align-self: flex-end;
   flex-grow: 4;
+  margin: 1.6rem;
 }
 .current__user {
   align-self: center;

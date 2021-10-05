@@ -124,7 +124,9 @@ export const PostFeed = () => {
       <>
         <div className="create">
           <Link className="navbar__link" to="/create">
-            <h3 className="font-effect-anaglyph">Post Your Sighting</h3>
+            <h3 className="font-effect-anaglyph">
+              👀👾🛸 Post Your Sighting 🛸👾👀
+            </h3>
           </Link>
         </div>
 
