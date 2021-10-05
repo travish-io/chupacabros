@@ -121,10 +121,13 @@ export const CreatePost = () => {
       >
         Submit New Sighting
       </button>
-      <button className="btn btn-primary">
-        <Link className="create__link" to="/">
-          Discard Sighting
-        </Link>
+      <button
+        className="btn btn-primary"
+        onClick={() => {
+          history.push("/");
+        }}
+      >
+        Discard Sighting
       </button>
     </form>
   );
