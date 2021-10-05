@@ -247,12 +247,23 @@ export const UserProfile = () => {
             return (
               <div className="post__container" key={post.id}>
                 <div className="post__header">
-                  <h5 className="font-effect-anaglyph">
-                    c/chupacabros &#183; Posted by u/{post.user.name} &#183;{" "}
-                    <small> {timeSince(postDate)} ago </small>
-                  </h5>
-
-                  <h5>{post.title}</h5>
+                  <div className="post__heading">
+                    <h5 className="font-effect-anaglyph">
+                      c/chupacabros &#183; Posted by u/{post.user.name} &#183;{" "}
+                      <small> {timeSince(postDate)} ago </small>
+                    </h5>
+                  </div>
+                  {post.legitness >= 50 ? (
+                    <div className="legit-o-container">
+                      <h6 className="font-effect-anaglyph">Legit-O-Meter:</h6>
+                      {post.legitness}%
+                    </div>
+                  ) : (
+                    ""
+                  )}
+                  <div className="post__title">
+                    <h4>{post.title}</h4>
+                  </div>
                 </div>
                 <img
                   className="post__image"

@@ -44,7 +44,7 @@ export const CreatePost = () => {
 
   return (
     <form className="createPost">
-      <h2 className="createPost__heading">Create a new Post</h2>
+      <h2 className="createPost__heading">Create a new Sighting</h2>
       <fieldset>
         <div className="form-group">
           <label htmlFor="title">Add a Title:</label>

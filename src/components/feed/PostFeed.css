@@ -90,10 +90,14 @@
 }
 
 .post__tagline {
-  font-size: 0.9em;
+  font-size: 1.3em;
   margin: 0 5% 0.5em 5%;
+  /* border-top: 0.8px solid rgba(128, 128, 128, 0.199); */
 }
-
+.post__title,
+h4 {
+  margin-bottom: 0;
+}
 .post__remark {
   font-size: 2em;
   margin: 1em 0 0.5em 0;
@@ -106,9 +110,11 @@
 .post__cl__container {
   display: flex;
   justify-content: space-between;
+  padding-top: 1px;
+  border-top: 0.8px solid rgba(128, 128, 128, 0.199);
 }
 .user__Profile {
-  margin-top: 6rem;
+  margin-top: 1.6rem;
   display: flex;
   justify-content: center;
 }
@@ -158,6 +164,9 @@
 h5 {
   margin-bottom: 3px;
 }
+.post__header {
+  border-bottom: 0.8px solid rgba(128, 128, 128, 0.199);
+}
 .user__profilePic {
   height: 100px;
   width: 160px;
@@ -178,43 +187,4 @@ h3 {
 .legit-o-meter,
 h6 {
   margin: 3px 0 3px 0;
-}
-.legit-1 {
-  background-color: red;
-}
-.legit-2 {
-  background-color: red;
-}
-.legit-3 {
-  background-color: red;
-}
-.legit-4 {
-  background-color: red;
-}
-.legit-5 {
-  background-color: darkorange;
-  color: darkorange;
-}
-.legit-6 {
-  background-color: darkorange;
-  color: darkorange;
-}
-.legit-7 {
-  background-color: goldenrod;
-  color: goldenrod;
-}
-.legit-8 {
-  background-color: goldenrod;
-  color: goldenrod;
-}
-.legit-9 {
-  background-color: green;
-  color: green;
-}
-.legit-10 {
-  background-color: green;
-  color: green;
-}
-.legit-empty {
-  color: white;
 }

@@ -227,7 +227,9 @@ export const PostFeed = () => {
                   ) : (
                     ""
                   )}
-                  <h4>{post.title}</h4>
+                  <div className="post__title">
+                    <h4>{post.title}</h4>
+                  </div>
                 </div>
                 <img
                   className="post__image"
