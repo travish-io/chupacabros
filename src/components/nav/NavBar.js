@@ -8,7 +8,6 @@ import "../feed/comments.css";
 export const NavBar = () => {
   const [toggleDropwDown, setToggleDropDown] = useState(false);
   const [toggleProbes, setToggleProbes] = useState(false);
-  const [seen, setSeen] = useState(0);
   const [users, setUsers] = useState([]);
   const [probes, setProbes] = useState([]);
 
@@ -20,13 +19,6 @@ export const NavBar = () => {
       setProbes(data);
     });
   }, []);
-
-  // useEffect(() => {
-  //   UpdateSeen();
-  //   ApiManager.fetchProbes().then((data) => {
-  //     setProbes(data);
-  //   });
-  // }, [seen]);
 
   const UpdateSeen = (id) => {
     const newData = { seen: true };
@@ -96,6 +88,9 @@ export const NavBar = () => {
                         onClick={() => {
                           setToggleDropDown(!toggleDropwDown);
                           setToggleProbes(false);
+                          ApiManager.fetchUsers().then((data) => {
+                            setUsers(data);
+                          });
                         }}
                       >
                         <img

@@ -124,7 +124,9 @@ export const PostFeed = () => {
       <>
         <div className="create">
           <Link className="navbar__link" to="/create">
-            <h3 className="font-effect-anaglyph">Post Your Sighting</h3>
+            <h3 className="font-effect-anaglyph">
+              👀👾🛸 Post Your Sighting 🛸👾👀
+            </h3>
           </Link>
         </div>
 
@@ -188,39 +190,46 @@ export const PostFeed = () => {
                           );
                         }}
                       >
-                        <span className="material-icons">add</span> Follow
+                        <span className="material-icons" id={post.user.id}>
+                          add
+                        </span>{" "}
+                        Follow
                       </button>
                     ) : (
-                      <button
-                        id={post.user.id}
-                        className="post__following__button"
-                        onClick={() => {
-                          const foundFollow = currentUserFollows.find(
-                            (follow) => {
-                              return follow.followingId === post.user.id;
-                            }
-                          );
+                      <small>
+                        <button
+                          id={post.user.id}
+                          className="post__following__button"
+                          onClick={() => {
+                            const foundFollow = currentUserFollows.find(
+                              (follow) => {
+                                return follow.followingId === post.user.id;
+                              }
+                            );
 
-                          ApiManager.deleteFollow(foundFollow.id).then(() =>
-                            ApiManager.fetchFollows().then((data) => {
-                              setFollows(data);
-                            })
-                          );
-                        }}
-                      >
-                        <span className="material-icons">done</span> Following
-                      </button>
+                            ApiManager.deleteFollow(foundFollow.id).then(() =>
+                              ApiManager.fetchFollows().then((data) => {
+                                setFollows(data);
+                              })
+                            );
+                          }}
+                        >
+                          <span className="material-icons">done</span> Following
+                        </button>
+                      </small>
                     )}
                   </div>
                   {post.legitness >= 50 ? (
                     <div className="legit-o-container">
                       <h6 className="font-effect-anaglyph">Legit-O-Meter:</h6>
-                      {post.legitness}%
+                      <small> {post.legitness}% Legit </small>
                     </div>
                   ) : (
                     ""
                   )}
-                  <h4>{post.title}</h4>
+                  <div className="post__title">
+                    <h4>{post.title}</h4>
+                  </div>
                 </div>
                 <img
                   className="post__image"
@@ -271,7 +280,9 @@ export const PostFeed = () => {
                           );
                     }}
                   >
-                    <span className="material-icons">thumb_up</span>
+                    <span className="material-icons" id={post.id}>
+                      thumb_up
+                    </span>
                     {post.postLikes?.length === 1
                       ? "1 Like"
                       : `${post.postLikes?.length} Likes`}
@@ -287,7 +298,9 @@ export const PostFeed = () => {
                         });
                       }}
                     >
-                      <span className="material-icons">delete</span>
+                      <span className="material-icons" id={post.id}>
+                        delete
+                      </span>
                     </button>
                   ) : (
                     ""
@@ -314,9 +327,8 @@ export const PostFeed = () => {
                           className="new__comment"
                           onClick={(evt) => {
                             createComment(evt).then(() => {
-                              fetchComments().then(() => {
-                                updateComment({ text: "" });
-                              });
+                              fetchComments();
+                              updateComment({ text: "" });
                             });
                           }}
                         >
@@ -333,24 +345,28 @@ export const PostFeed = () => {
                           (commentLike) => {
                             return (
                               commentLike.userId ===
-                              parseInt(localStorage.getItem("chupacabro_user"))
+                                parseInt(
+                                  localStorage.getItem("chupacabro_user")
+                                ) && commentLike.commentId === comment.id
                             );
                           }
                         );
 
                         if (comment.postId === post.id) {
                           return (
-                            <p key={comment.id} className="comments">
-                              <b>
-                                <img
-                                  src={comment.user.profileImg}
-                                  className="comment__profilePic"
-                                  alt=""
-                                />
-                                u/{comment.user.name}
-                              </b>{" "}
-                              <br></br>
-                              {comment.text}
+                            <div className="comments">
+                              <p>
+                                <b>
+                                  <img
+                                    src={comment.user.profileImg}
+                                    className="comment__profilePic"
+                                    alt=""
+                                  />
+                                  u/{comment.user.name}
+                                </b>{" "}
+                                <br></br>
+                                {comment.text}
+                              </p>
                               {foundCommentLike ? (
                                 <div>
                                   <button
@@ -364,7 +380,10 @@ export const PostFeed = () => {
                                       });
                                     }}
                                   >
-                                    <span className="material-icons">
+                                    <span
+                                      className="material-icons"
+                                      id={comment.id}
+                                    >
                                       thumb_up
                                     </span>
                                     {comment.commentLikes?.length}
@@ -381,14 +400,17 @@ export const PostFeed = () => {
                                       });
                                     }}
                                   >
-                                    <span className="material-icons">
+                                    <span
+                                      className="material-icons"
+                                      id={comment.id}
+                                    >
                                       thumb_up
                                     </span>
                                     {comment.commentLikes?.length}
                                   </button>
                                 </div>
                               )}
-                            </p>
+                            </div>
                           );
                         }
                       })

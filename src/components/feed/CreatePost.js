@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useHistory } from "react-router";
 import ApiManager from "../ApiManager";
 import { Link } from "react-router-dom";
-import { axios } from "axios";
+
 export const CreatePost = () => {
   const [post, updatePost] = useState({
     title: "",
@@ -44,7 +44,7 @@ export const CreatePost = () => {
 
   return (
     <form className="createPost">
-      <h2 className="createPost__heading">Create a new Post</h2>
+      <h2 className="createPost__heading">Create a new Sighting</h2>
       <fieldset>
         <div className="form-group">
           <label htmlFor="title">Add a Title:</label>
@@ -115,16 +115,19 @@ export const CreatePost = () => {
         className="btn btn-primary"
         onClick={() => {
           post.title && post.imageUrl !== ""
-            ? createPost().then(history.push("/")).then(ApiManager.fetchPosts())
+            ? createPost().then(history.push("/"))
             : window.alert("Fill out all required fields");
         }}
       >
         Submit New Sighting
       </button>
-      <button className="btn btn-primary">
-        <Link className="create__link" to="/">
-          Discard Sighting
-        </Link>
+      <button
+        className="btn btn-primary"
+        onClick={() => {
+          history.push("/");
+        }}
+      >
+        Discard Sighting
       </button>
     </form>
   );

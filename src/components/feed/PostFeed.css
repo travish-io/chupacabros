@@ -72,13 +72,15 @@
 }
 
 .post__container {
-  margin: 5% 25%;
+  margin: 5% 35%;
   flex-basis: 50%;
   border: 1px black solid;
+  max-width: 30%;
 }
 
 .post__image {
   width: 100%;
+  max-height: 600px;
 }
 
 .post__actions {
@@ -88,10 +90,14 @@
 }
 
 .post__tagline {
-  font-size: 0.9em;
+  font-size: 1.3em;
   margin: 0 5% 0.5em 5%;
+  /* border-top: 0.8px solid rgba(128, 128, 128, 0.199); */
 }
-
+.post__title,
+h4 {
+  margin-bottom: 0;
+}
 .post__remark {
   font-size: 2em;
   margin: 1em 0 0.5em 0;
@@ -104,9 +110,12 @@
 .post__cl__container {
   display: flex;
   justify-content: space-between;
+  padding-top: 1px;
+  border-top: 0.8px solid rgba(128, 128, 128, 0.199);
+  background: #e5e6eb69;
 }
 .user__Profile {
-  margin-top: 6rem;
+  margin-top: 1.6rem;
   display: flex;
   justify-content: center;
 }
@@ -125,11 +134,12 @@
 .post__follow__button,
 .post__following__button {
   padding: 1px;
-  margin: 3px 3px 0 0;
+  margin: 13px 6px 0 0;
 }
 .profile__stats {
   padding: 1rem;
 }
+
 .comment__profilePic {
   height: 30px;
   width: 36px;
@@ -137,6 +147,9 @@
 }
 .comment__textarea {
   width: calc(100% - 23px);
+}
+.comment__like {
+  margin-top: 3px;
 }
 .post__profilePic {
   height: 30px;
@@ -147,10 +160,15 @@
   display: flex;
   justify-content: space-between;
   position: relative;
+  border-bottom: 0.6px solid #b9b5b55e;
+  background: #020a361a;
 }
 .post__heading,
 h5 {
   margin-bottom: 3px;
+}
+.post__header {
+  border-bottom: 0.8px solid rgba(128, 128, 128, 0.199);
 }
 .user__profilePic {
   height: 100px;
@@ -158,8 +176,10 @@ h5 {
   border-radius: 50%;
   margin: 10px;
 }
-.create {
+.create,
+h3 {
   text-align: center;
+  font-size: 36px;
 }
 .legit__slider {
   width: 175px;
@@ -170,43 +190,4 @@ h5 {
 .legit-o-meter,
 h6 {
   margin: 3px 0 3px 0;
-}
-.legit-1 {
-  background-color: red;
-}
-.legit-2 {
-  background-color: red;
-}
-.legit-3 {
-  background-color: red;
-}
-.legit-4 {
-  background-color: red;
-}
-.legit-5 {
-  background-color: darkorange;
-  color: darkorange;
-}
-.legit-6 {
-  background-color: darkorange;
-  color: darkorange;
-}
-.legit-7 {
-  background-color: goldenrod;
-  color: goldenrod;
-}
-.legit-8 {
-  background-color: goldenrod;
-  color: goldenrod;
-}
-.legit-9 {
-  background-color: green;
-  color: green;
-}
-.legit-10 {
-  background-color: green;
-  color: green;
-}
-.legit-empty {
-  color: white;
 }

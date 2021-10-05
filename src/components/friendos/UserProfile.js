@@ -166,7 +166,10 @@ export const UserProfile = () => {
                   );
                 }}
               >
-                <span className="material-icons">add</span> Follow
+                <span className="material-icons" id={user.id}>
+                  add
+                </span>{" "}
+                Follow
               </button>
             ) : (
               <button
@@ -184,7 +187,10 @@ export const UserProfile = () => {
                   );
                 }}
               >
-                <span className="material-icons">done</span> Following
+                <span className="material-icons" id={user.id}>
+                  done
+                </span>{" "}
+                <small> Following </small>
               </button>
             )}
           </div>
@@ -241,12 +247,23 @@ export const UserProfile = () => {
             return (
               <div className="post__container" key={post.id}>
                 <div className="post__header">
-                  <h5 className="font-effect-anaglyph">
-                    c/chupacabros &#183; Posted by u/{post.user.name} &#183;{" "}
-                    <small> {timeSince(postDate)} ago </small>
-                  </h5>
-
-                  <h5>{post.title}</h5>
+                  <div className="post__heading">
+                    <h5 className="font-effect-anaglyph">
+                      c/chupacabros &#183; Posted by u/{post.user.name} &#183;{" "}
+                      <small> {timeSince(postDate)} ago </small>
+                    </h5>
+                  </div>
+                  {post.legitness >= 50 ? (
+                    <div className="legit-o-container">
+                      <h6 className="font-effect-anaglyph">Legit-O-Meter:</h6>
+                      <small> {post.legitness}% Legit </small>
+                    </div>
+                  ) : (
+                    ""
+                  )}
+                  <div className="post__title">
+                    <h4>{post.title}</h4>
+                  </div>
                 </div>
                 <img
                   className="post__image"
@@ -265,7 +282,7 @@ export const UserProfile = () => {
                           : setToggleComments(true);
                       }}
                     >
-                      <span className="material-icons">
+                      <span className="material-icons" id={post.id}>
                         chat_bubble_outline
                       </span>
                       {post.comments?.length === 1
@@ -297,7 +314,9 @@ export const UserProfile = () => {
                           );
                     }}
                   >
-                    <span className="material-icons">thumb_up</span>
+                    <span className="material-icons" id={post.id}>
+                      thumb_up
+                    </span>
                     {post.postLikes?.length === 1
                       ? "1 Like"
                       : `${post.postLikes?.length} Likes`}
@@ -315,7 +334,9 @@ export const UserProfile = () => {
                         });
                       }}
                     >
-                      <span className="material-icons">delete</span>
+                      <span className="material-icons" id={post.id}>
+                        delete
+                      </span>
                     </button>
                   ) : (
                     ""
@@ -363,7 +384,9 @@ export const UserProfile = () => {
                           (commentLike) => {
                             return (
                               commentLike.userId ===
-                              parseInt(localStorage.getItem("chupacabro_user"))
+                                parseInt(
+                                  localStorage.getItem("chupacabro_user")
+                                ) && commentLike.commentId === comment.id
                             );
                           }
                         );
@@ -394,7 +417,10 @@ export const UserProfile = () => {
                                       });
                                     }}
                                   >
-                                    <span className="material-icons">
+                                    <span
+                                      className="material-icons"
+                                      id={comment.id}
+                                    >
                                       thumb_up
                                     </span>
                                     {comment.commentLikes?.length}
@@ -411,7 +437,10 @@ export const UserProfile = () => {
                                       });
                                     }}
                                   >
-                                    <span className="material-icons">
+                                    <span
+                                      className="material-icons"
+                                      id={comment.id}
+                                    >
                                       thumb_up
                                     </span>
                                     {comment.commentLikes?.length}
