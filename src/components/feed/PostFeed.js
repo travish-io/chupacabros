@@ -122,14 +122,15 @@ export const PostFeed = () => {
   return (
     <SRLWrapper>
       <>
-        <div className="create">
-          <Link className="navbar__link" to="/create">
-            <h3 className="font-effect-anaglyph">
-              👀👾🛸 Post Your Sighting 🛸👾👀
-            </h3>
-          </Link>
+        <div className="create__container">
+          <div className="create">
+            <Link className="navbar__link" to="/create">
+              <h3 className="font-effect-anaglyph">
+                👀👾🛸 Post Your Sighting 🛸👾👀
+              </h3>
+            </Link>
+          </div>
         </div>
-
         <div className="postFeed__container">
           {posts.map((post) => {
             const postDate = new Date(post.date);
@@ -214,7 +215,7 @@ export const PostFeed = () => {
                             );
                           }}
                         >
-                          <span className="material-icons">done</span> Following
+                          <span className="material-icons">done</span>
                         </button>
                       </small>
                     )}
