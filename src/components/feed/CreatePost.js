@@ -9,6 +9,7 @@ export const CreatePost = () => {
     imageUrl: "",
     text: "",
     legitness: 0,
+    category: "chupacabros",
   });
   const [legitness, setLegitness] = useState(0);
   const history = useHistory();
@@ -26,6 +27,7 @@ export const CreatePost = () => {
       text: post.text,
       date: Date.now(),
       legitness: parseInt(legitness),
+      category: post.category,
       location: "",
     };
 
@@ -110,6 +112,22 @@ export const CreatePost = () => {
           />
           {legitness}%
         </div>
+      </fieldset>
+      <fieldset>
+        <label>Choose a Category for this Sighting:</label>
+        <select
+          onChange={(evt) => {
+            const copy = { ...post };
+            copy.category = evt.target.value;
+            updatePost(copy);
+          }}
+        >
+          <option value="chupacabros">General</option>
+          <option value="bigfoot">Big Foot</option>
+          <option value="ufo">UFO</option>
+          <option value="nessy">Nessy</option>
+          <option value="chupacabras">Chupacabra</option>
+        </select>
       </fieldset>
       <button
         className="btn btn-primary"
