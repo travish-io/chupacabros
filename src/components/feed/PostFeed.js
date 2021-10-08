@@ -168,7 +168,8 @@ export const PostFeed = () => {
                 <div className="post__header">
                   <div className="post__heading">
                     <h5 className="font-effect-anaglyph">
-                      c/chupacabros &#183; Posted by{" "}
+                      <Link to={`/c/${post.category}`}>c/{post.category}</Link>{" "}
+                      &#183; Posted by{" "}
                       <Link to={`/u/${post.user.id}`}>u/{post.user.name} </Link>
                       &#183; <small> {timeSince(postDate)} ago </small>
                     </h5>

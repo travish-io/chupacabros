@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import ApiManager from "../ApiManager";
 import { SRLWrapper } from "simple-react-lightbox";
 import "../feed/PostFeed.css";
@@ -143,6 +143,7 @@ export const UserProfile = () => {
   return (
     <SRLWrapper>
       <>
+        {console.log(userId)}
         <div className="user__Profile">
           <img src={user.profileImg} alt="" className="user__profilePic" />
           <h1 className="font-effect-anaglyph">u/{user.name} </h1>
@@ -249,7 +250,8 @@ export const UserProfile = () => {
                 <div className="post__header">
                   <div className="post__heading">
                     <h5 className="font-effect-anaglyph">
-                      c/chupacabros &#183; Posted by u/{post.user.name} &#183;{" "}
+                      <Link to={`/c/${post.category}`}>c/{post.category}</Link>{" "}
+                      &#183; Posted by u/{post.user.name} &#183;{" "}
                       <small> {timeSince(postDate)} ago </small>
                     </h5>
                   </div>
