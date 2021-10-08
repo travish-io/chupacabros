@@ -130,6 +130,7 @@ export const CreatePost = () => {
         </select>
       </fieldset>
       <button
+        type="button"
         className="btn btn-primary"
         onClick={() => {
           post.title && post.imageUrl !== ""
@@ -140,6 +141,7 @@ export const CreatePost = () => {
         Submit New Sighting
       </button>
       <button
+        type="button"
         className="btn btn-primary"
         onClick={() => {
           history.push("/");
