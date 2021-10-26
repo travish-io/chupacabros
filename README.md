@@ -2,7 +2,7 @@
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-## get the Chupacabros API here
+## Get the Chupacabros API here:
 
 https://github.com/travish-io/chupacabro-api
 
